@@ -3,6 +3,9 @@ import { createPage } from './Page.js'
 export function createBook(pages) {
   let spreadIndex = 0
   let pageIndex = 0
+  let activeGesture = null
+  let turnTimer = null
+  let settleTimer = null
   const maxSpread = Math.ceil(pages.length / 2) - 1
   const mobileQuery = window.matchMedia('(max-width: 700px)')
   let mobileMode = mobileQuery.matches
@@ -76,6 +79,85 @@ export function createBook(pages) {
     else spreadIndex = Math.max(0, Math.min(maxSpread, spreadIndex + amount))
     render()
   }
+
+  function settleGesture(page) {
+    page.classList.remove('page--dragging', 'page--drag-release')
+    page.classList.add('page--drag-settling')
+    page.style.setProperty('--drag-x', '0px')
+    window.clearTimeout(settleTimer)
+    settleTimer = window.setTimeout(() => {
+      page.classList.remove('page--drag-settling')
+      page.style.removeProperty('--drag-x')
+    }, 190)
+  }
+
+  spread.addEventListener('pointerdown', (event) => {
+    if (!mobileMode || event.pointerType === 'mouse' || turnTimer !== null) return
+    if (event.target.closest('button, a, input, textarea, select, [data-no-page-turn]')) return
+
+    const page = spread.querySelector('.page')
+    if (!page) return
+
+    activeGesture = {
+      pointerId: event.pointerId,
+      page,
+      startX: event.clientX,
+      startY: event.clientY,
+      deltaX: 0,
+      axis: null,
+      startedAt: performance.now(),
+    }
+    page.classList.add('page--dragging')
+    spread.setPointerCapture(event.pointerId)
+  })
+
+  spread.addEventListener('pointermove', (event) => {
+    if (!activeGesture || event.pointerId !== activeGesture.pointerId) return
+
+    const deltaX = event.clientX - activeGesture.startX
+    const deltaY = event.clientY - activeGesture.startY
+    if (!activeGesture.axis && Math.max(Math.abs(deltaX), Math.abs(deltaY)) > 7) {
+      activeGesture.axis = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical'
+    }
+    if (activeGesture.axis === 'vertical') {
+      settleGesture(activeGesture.page)
+      activeGesture = null
+      return
+    }
+    if (activeGesture.axis !== 'horizontal') return
+
+    event.preventDefault()
+    activeGesture.deltaX = deltaX
+    activeGesture.page.style.setProperty('--drag-x', `${deltaX}px`)
+  }, { passive: false })
+
+  function finishGesture(event, cancelled = false) {
+    if (!activeGesture || event.pointerId !== activeGesture.pointerId) return
+
+    const gesture = activeGesture
+    activeGesture = null
+    const elapsed = Math.max(performance.now() - gesture.startedAt, 1)
+    const distance = Math.abs(gesture.deltaX)
+    const velocity = distance / elapsed
+    const direction = gesture.deltaX < 0 ? 1 : -1
+    const pastEdge = (direction < 0 && pageIndex === 0) || (direction > 0 && pageIndex >= pages.length - 1)
+
+    if (cancelled || pastEdge || (distance < 52 && velocity < 0.45)) {
+      settleGesture(gesture.page)
+      return
+    }
+
+    gesture.page.classList.remove('page--dragging')
+    gesture.page.classList.add('page--drag-release')
+    gesture.page.style.setProperty('--drag-x', direction > 0 ? '-110%' : '110%')
+    turnTimer = window.setTimeout(() => {
+      turnTimer = null
+      turn(direction)
+    }, 150)
+  }
+
+  spread.addEventListener('pointerup', (event) => finishGesture(event))
+  spread.addEventListener('pointercancel', (event) => finishGesture(event, true))
 
   previous.addEventListener('click', () => turn(-1))
   next.addEventListener('click', () => turn(1))

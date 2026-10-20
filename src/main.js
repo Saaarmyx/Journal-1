@@ -1,5 +1,8 @@
+import { inject } from '@vercel/analytics'
 import { createJournal } from './journal/createJournal.js'
 import './styles/global.css'
+
+inject()
 
 const root = document.querySelector('#app')
 
