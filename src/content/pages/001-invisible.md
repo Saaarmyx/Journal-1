@@ -1,9 +1,11 @@
 ---
-title: Mi metodo para aprender
+title: Mi pacto con este diario
 ---
 
-Antes de leer, intenta resolver un problema y anota que parte no sabes,
-Despues estudia una leccion breve y reproduce el ejemplo sin mirar,
-Compara tu respuesta solo despues de intentarlo, explica el error y vuelve a resolverlo dias despues,
-En cada apunte registra definicion, ejemplo propio, contraejemplo, errores frecuentes y fuente,
-En ciencia e ingenieria anota unidades, supuestos e incertidumbre,
+Yo voy a estudiar una idea a la vez, primero intentare resolver un problema sin mirar apuntes,
+
+Si me atasco, voy a escribir exactamente que paso no entiendo, luego estudiare un ejemplo y lo repetire sin mirar,
+
+No voy a esconder los errores, anotare que supuse, que regla use y como puedo comprobar el resultado,
+
+Al final de cada tema volvere a resolver los ejercicios dias despues, si puedo explicarlos con mis palabras, sabre que avance,
