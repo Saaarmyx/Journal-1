@@ -1,0 +1,13 @@
+---
+title: Propiedad de ???
+---
+
+> "Si encontraste este libro, ciérralo. Si lo lees, no me hago responsable de que tu cerebro explote con tanta ciencia."
+
+SECCIÓN 1: REGLAS DEL DIARIO
+
+    Regla #1: No tocar los experimentos sin supervisión (o sin extintor a la mano).
+
+    Regla #2: El código que funciona a la primera es sospechoso. Duda de él.
+
+    Regla #3: Las matemáticas no mienten, pero mis cálculos a las 3:00 AM sí.
