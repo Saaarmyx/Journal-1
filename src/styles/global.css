@@ -598,6 +598,18 @@ button:focus-visible {
   .page-paper {
     padding: 22px 16px 38px;
   }
+  .page-paper--uv-active::before {
+    background: radial-gradient(
+      ellipse 115% 105% at 50% 48%,
+      #70d9ff66 0%,
+      #42baf244 62%,
+      #248fe51c 100%
+    );
+  }
+  .page-paper--uv-active .invisible-ink {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
   .invisible-ink {
     padding: 22px 16px 38px;
   }

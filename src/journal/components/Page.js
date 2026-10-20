@@ -88,6 +88,7 @@ export function createPage(page, side, nextPage = null) {
       ink.setAttribute('aria-hidden', String(!isActive))
     })
     const moveLight = (event) => {
+      if (window.matchMedia('(max-width: 700px)').matches) return
       if (!paper.classList.contains('page-paper--uv-active')) return
       const bounds = paper.getBoundingClientRect()
       paper.style.setProperty('--uv-x', `${event.clientX - bounds.left}px`)
