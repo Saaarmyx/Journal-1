@@ -9,6 +9,16 @@ const markdownFiles = import.meta.glob('../content/pages/*.md', {
 
 function readPage(path, raw) {
   const filename = path.split('/').pop()
+  if (filename.toLowerCase() === 'final.md') {
+    const { meta, body } = parseFrontmatter(raw)
+    return {
+      id: 'final',
+      isEnding: true,
+      kind: 'ending',
+      title: meta.title || 'Continúa en el diario',
+      html: renderMarkdown(body),
+    }
+  }
   const match = filename.match(/^(\d+)(?:-(invisible))?\.md$/i)
   if (!match) return null
 
@@ -31,15 +41,28 @@ export function loadPages() {
     .map(([path, raw]) => readPage(path, raw))
     .filter(Boolean)
     .sort((a, b) => a.number - b.number)
-  const pagesByNumber = new Map(found.filter((page) => !page.isInvisible).map((page) => [page.number, page]))
-  const invisibleByNumber = new Map(found.filter((page) => page.isInvisible).map((page) => [page.number, page]))
-  const lastNumber = Math.max(journalConfig.lastPageNumber, ...pagesByNumber.keys(), 1)
+  const ending = found.find((page) => page.isEnding)
+  const numberedPages = found.filter((page) => !page.isEnding)
+  const pagesByNumber = new Map(numberedPages.filter((page) => !page.isInvisible).map((page) => [page.number, page]))
+  const invisibleByNumber = new Map(numberedPages.filter((page) => page.isInvisible).map((page) => [page.number, page]))
+  const lastNumber = Math.max(journalConfig.lastPageNumber, ...pagesByNumber.keys(), ...invisibleByNumber.keys(), 1)
 
-  return Array.from({ length: lastNumber + 1 }, (_, number) => {
+  const pages = Array.from({ length: lastNumber + 1 }, (_, number) => {
     const page = pagesByNumber.get(number)
     if (page) {
       const invisible = invisibleByNumber.get(number)
       return invisible ? { ...page, invisible: { title: invisible.title, html: invisible.html } } : page
+    }
+    const invisible = invisibleByNumber.get(number)
+    if (invisible) {
+      return {
+        id: `blank-${number}`,
+        number,
+        kind: 'page',
+        title: '',
+        html: '',
+        invisible: { title: invisible.title, html: invisible.html },
+      }
     }
     return {
       id: `missing-${number}`,
@@ -49,4 +72,14 @@ export function loadPages() {
       html: '',
     }
   })
+
+  if (ending) {
+    // Keep the closing page on the right side of a desktop spread.
+    if (pages.length % 2 === 0) {
+      pages.push({ id: 'ending-spacer', number: lastNumber + 1, kind: 'blank', title: '', html: '' })
+    }
+    pages.push({ ...ending, number: lastNumber + pages.length - lastNumber })
+  }
+
+  return pages
 }

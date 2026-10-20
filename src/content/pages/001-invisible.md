@@ -1,13 +1,9 @@
 ---
-title: Propiedad de ???
+title: Santiago Sarmiento
 ---
 
-> "Si encontraste este libro, ciérralo. Si lo lees, no me hago responsable de que tu cerebro explote con tanta ciencia."
+> "Si encontraste este libro, cierralo, aqui practicamente estoy documentanto mi caida en la locura"
 
-SECCIÓN 1: REGLAS DEL DIARIO
+**¿POR QUÉ DECIDÍ ESCRIBIR ESTO?**
 
-    Regla #1: No tocar los experimentos sin supervisión (o sin extintor a la mano).
-
-    Regla #2: El código que funciona a la primera es sospechoso. Duda de él.
-
-    Regla #3: Las matemáticas no mienten, pero mis cálculos a las 3:00 AM sí.
+NO HAY REGLAS AQUÍ. Este libro existe para que aprendas a programar de verdad y, al mismo tiempo, presencies cómo opera la mente de un genio. Al principio vas a pensar que todo esto es un caos absoluto, que las fórmulas no tienen sentido o que me volví completamente loco entre tantas líneas de código y desvelos. Pero no te engañes. Cada algoritmo, cada ecuación de física y cada reacción química anotada en estas páginas tiene un propósito. Sé que ahora mismo te cuesta creerlo, pero a medida que avances y conectes las piezas, vas a entender exactamente por qué digo esto. Bienvenido a mi laboratorio sobre papel.

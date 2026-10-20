@@ -1,15 +1,24 @@
-const escapeText = (text = '') => text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
+const escapeText = (text = '') =>
+  text.replace(
+    /[&<>"']/g,
+    (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char],
+  )
 
 export function createPage(page, side, nextPage = null) {
   const article = document.createElement('article')
   article.className = `page page--${page.kind} page--${side}`
-  article.setAttribute('aria-label', page.kind === 'missing' ? `Hoja arrancada ${page.number}` : `${page.title}, página ${page.number}`)
+  article.setAttribute(
+    'aria-label',
+    page.kind === 'missing'
+      ? `Hoja arrancada ${page.number}`
+      : `${page.title}, página ${page.number}`,
+  )
 
   if (page.kind === 'missing') {
     if (!nextPage) article.classList.add('page--missing-end')
     article.innerHTML = `
       ${nextPage ? `<div class="under-sheet" aria-hidden="true">${createPage(nextPage, side).innerHTML}</div>` : ''}
-      <div class="torn-remnant" aria-hidden="true"></div>
+      <div class="torn-remnant" aria-hidden="true"><span class="torn-label">Página rota</span></div>
     `
     return article
   }
@@ -21,15 +30,37 @@ export function createPage(page, side, nextPage = null) {
     return article
   }
 
+  if (page.kind === 'blank') return article
+
+  if (page.kind === 'ending') {
+    article.classList.add('page--ending')
+    article.innerHTML = `
+      <div class="ending-content">
+        <h1>${escapeText(page.title)}</h1>
+        <div class="ending-volume">${page.html}</div>
+      </div>
+    `
+    return article
+  }
+
   const isOwner = page.number === 1
   const hasSideImage = page.html.includes('polaroid--left') || page.html.includes('polaroid--right')
-  const invisibleMarkup = page.invisible ? `
+  const invisibleHasSideImage =
+    page.invisible?.html.includes('polaroid--left') ||
+    page.invisible?.html.includes('polaroid--right')
+  const invisibleMarkup = page.invisible
+    ? `
     <button class="invisible-toggle" type="button" aria-pressed="false" aria-label="Activar luz azul para revelar tinta invisible" title="Luz azul">✦</button>
     <div class="invisible-ink" aria-hidden="true">
-      <h2>${escapeText(page.invisible.title)}</h2>
-      <div class="invisible-body">${page.invisible.html}</div>
+      <div class="invisible-content">
+        <header class="page-heading">
+          <h2>${escapeText(page.invisible.title)}</h2>
+        </header>
+        <div class="page-body invisible-body${invisibleHasSideImage ? '' : ' page-body--spread'}">${page.invisible.html}</div>
+      </div>
     </div>
-  ` : ''
+  `
+    : ''
   article.innerHTML = `
     <div class="page-paper${page.invisible ? ' page-paper--has-invisible' : ''}">
       <div class="page-content">
@@ -50,7 +81,10 @@ export function createPage(page, side, nextPage = null) {
     toggle.addEventListener('click', () => {
       const isActive = paper.classList.toggle('page-paper--uv-active')
       toggle.setAttribute('aria-pressed', String(isActive))
-      toggle.setAttribute('aria-label', isActive ? 'Apagar luz azul' : 'Activar luz azul para revelar tinta invisible')
+      toggle.setAttribute(
+        'aria-label',
+        isActive ? 'Apagar luz azul' : 'Activar luz azul para revelar tinta invisible',
+      )
       ink.setAttribute('aria-hidden', String(!isActive))
     })
     const moveLight = (event) => {

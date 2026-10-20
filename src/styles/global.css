@@ -142,15 +142,16 @@ button:focus-visible {
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  font-size: clamp(19px, 1.8vw, 26px);
+  font-size: clamp(18px, 1.65vw, 24px);
 }
 .page-heading {
   position: relative;
-  margin-bottom: 1.2em;
+  margin-bottom: 0.8em;
   text-align: center;
 }
 .page-paper--has-invisible .page-heading {
   padding: 22px 0 0 42px;
+  text-align: center;
 }
 .page-kicker,
 .page-heading time {
@@ -191,22 +192,20 @@ button:focus-visible {
   text-align: left;
 }
 .page-body--spread {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: block;
 }
 .page-body p {
-  margin: 0 0 1em;
+  margin: 0 0 0.55em;
 }
 .page-body h2,
 .page-body h3 {
-  margin: 1.7em 0 0.7em;
+  margin: 1.1em 0 0.45em;
   font-size: 1.12em;
   font-weight: 400;
   color: #4d4033;
 }
 .page-body blockquote {
-  margin: 1.5em 0;
+  margin: 0.8em 0;
   padding: 5px 0 5px 20px;
   border-left: 2px solid var(--rust);
   color: #6b5543;
@@ -224,7 +223,7 @@ button:focus-visible {
 }
 .journal-rule {
   height: 1px;
-  margin: 2em 0;
+  margin: 1.1em 0;
   border: 0;
   background: #725f443d;
 }
@@ -314,8 +313,6 @@ button:focus-visible {
   padding: clamp(24px, 4vh, 48px) clamp(20px, 4vw, 58px);
   overflow: hidden;
   color: #063b9f;
-  font-size: clamp(19px, 1.8vw, 26px);
-  line-height: 1.55;
   text-shadow:
     0 0 1px #073b91,
     0 0 7px #6bcaff,
@@ -334,22 +331,77 @@ button:focus-visible {
     transparent 100%
   );
 }
+.invisible-content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  font-size: clamp(18px, 1.65vw, 24px);
+}
 .page-paper--uv-active .invisible-ink {
   opacity: 1;
 }
-.invisible-ink h2 {
-  margin: 0 0 1.2em;
+.invisible-ink .page-body {
   color: #063b9f;
-  font-size: 1.55em;
-  font-weight: 400;
-  text-align: left;
 }
-.invisible-body p {
-  margin: 0 0 1em;
+.invisible-ink .page-heading h2 {
+  color: #063b9f;
+}
+.page-paper--uv-active .invisible-ink .page-body {
+  opacity: 1;
+}
+.invisible-ink .page-body h2,
+.invisible-ink .page-body h3,
+.invisible-ink .page-body blockquote {
+  color: #2455a2;
+}
+.invisible-ink .polaroid figcaption {
+  color: #2455a2;
 }
 
 .page--cover {
   background: #171412;
+}
+.page--blank {
+  background: var(--paper);
+}
+.page--ending {
+  display: grid;
+  place-items: center;
+  padding: 8%;
+  background:
+    radial-gradient(ellipse at 48% 45%, #fff4d5 0%, #f3dfb6 58%, #d0ad79 100%);
+  box-shadow: inset 0 0 38px #76532d30;
+  text-align: center;
+}
+.ending-content {
+  display: grid;
+  justify-items: center;
+  gap: clamp(10px, 3vh, 28px);
+  width: 100%;
+  color: #40180f;
+}
+.ending-content h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-family: 'Indie Flower', cursive;
+  font-size: clamp(34px, 5.3vw, 76px);
+  font-weight: 900;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.ending-volume h1,
+.ending-volume h2,
+.ending-volume h3 {
+  margin: 0;
+  font-size: clamp(88px, 15vw, 190px);
+  font-weight: 400;
+  line-height: 0.95;
+}
+.ending-volume p {
+  margin: 0;
+  font-size: clamp(88px, 15vw, 190px);
+  line-height: 0.95;
 }
 .cover-image {
   position: absolute;
@@ -360,10 +412,8 @@ button:focus-visible {
   object-fit: contain;
 }
 .page-body--owner {
-  display: grid;
-  min-height: 58%;
-  align-content: center;
-  justify-items: start;
+  display: block;
+  min-height: 0;
   text-align: left;
 }
 .page-body--owner h2,
@@ -397,41 +447,42 @@ button:focus-visible {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: clamp(22px, 3vw, 42px);
-  background: linear-gradient(90deg, #b8a889, #ded3bb 9%, #d8cdb4 96%, #a89778);
+  z-index: 1;
+  width: clamp(58px, 7vw, 82px);
+  background: linear-gradient(110deg, #d9c69f 0%, var(--paper) 34%, #f0dfb8 72%, var(--paper));
   clip-path: polygon(
-    0 0,
-    100% 0,
-    100% 100%,
-    0 100%,
-    22% 94%,
-    0 89%,
-    25% 83%,
-    3% 77%,
-    22% 71%,
-    0 65%,
-    20% 59%,
-    2% 53%,
-    24% 47%,
-    0 41%,
-    21% 35%,
-    1% 29%,
-    24% 23%,
-    0 17%,
-    20% 11%,
-    2% 5%
+    100% 0, 100% 100%, 0 100%, 14% 97%, 3% 94%, 31% 91%,
+    6% 88%, 21% 85%, 1% 82%, 26% 79%, 8% 76%, 42% 73%,
+    4% 70%, 19% 67%, 0 64%, 34% 61%, 7% 58%, 23% 55%,
+    1% 52%, 29% 49%, 3% 46%, 18% 43%, 0 40%, 35% 37%,
+    8% 34%, 22% 31%, 1% 28%, 30% 25%, 4% 22%, 19% 19%,
+    0 16%, 27% 13%, 5% 10%, 22% 7%, 3% 4%
   );
-  filter: drop-shadow(-5px 0 5px #21170e88);
+  filter: drop-shadow(-7px 1px 6px #21170e88);
+}
+.torn-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 108px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  color: #634d35;
+  font-size: 15px;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 1px #fff8;
 }
 .page--missing.page--left .torn-remnant {
   right: 0;
-  transform: scaleX(-1);
 }
 .page--missing.page--right .torn-remnant {
+  right: auto;
   left: 0;
+  transform: scaleX(-1);
+  filter: drop-shadow(7px 1px 6px #21170e88);
 }
-.page--missing.page--right .torn-remnant {
-  filter: drop-shadow(5px 0 5px #21170e88);
+.page--missing.page--right .torn-label {
+  transform: translate(-50%, -50%) rotate(90deg);
 }
 
 .turn-control {
@@ -517,14 +568,28 @@ button:focus-visible {
     --gutter: 12px;
   }
   .book-spread {
-    width: min(100vw, calc(149.34dvh + var(--gutter)));
-    height: min(100dvh, calc((100vw - var(--gutter)) * 0.6696));
+    width: min(calc(100vw - 24px), calc(74.67dvh - 36px));
+    height: min(calc(100dvh - 48px), calc(133.9vw - 32px));
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .book-gutter {
+    display: none;
+  }
+  .page--left,
+  .page--right {
+    border-radius: 4px;
   }
   .page-paper {
     padding: 22px 16px 38px;
   }
+  .invisible-ink {
+    padding: 22px 16px 38px;
+  }
+  .invisible-content {
+    font-size: clamp(16px, 3.2vw, 19px);
+  }
   .page-heading {
-    margin-bottom: 1.5em;
+    margin-bottom: 0.8em;
   }
   .page-heading h2 {
     max-width: 100%;
@@ -542,15 +607,16 @@ button:focus-visible {
     line-height: 1.45;
   }
   .page-content {
-    font-size: clamp(17px, 3.5vw, 21px);
+    font-size: clamp(16px, 3.2vw, 19px);
   }
   .turn-control {
-    top: auto;
-    bottom: 1px;
-    width: 42px;
-    height: 30px;
-    transform: none;
-    border-radius: 3px;
+    top: 50%;
+    bottom: auto;
+    width: 38px;
+    height: 38px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: #151210bb;
   }
   .turn-control span {
     font-size: 25px;
