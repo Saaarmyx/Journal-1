@@ -1,5 +1,5 @@
 ---
-title: Mi pacto con este diario
+title: Santiago Sarmiento
 ---
 
 Yo voy a estudiar una idea a la vez, primero intentare resolver un problema sin mirar apuntes,
