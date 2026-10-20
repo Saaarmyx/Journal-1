@@ -1,5 +1,5 @@
 ---
-title: Continúa en el diario
+title: Continua en el diario
 ---
 
 # #2

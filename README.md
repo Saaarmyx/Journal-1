@@ -2,6 +2,12 @@
 
 Diario web a pantalla completa, organizado como un libro abierto. Cada hoja vive en un archivo Markdown independiente.
 
+Esta edicion recorre aritmetica, algebra, funciones, trigonometria, calculo, algebra lineal, matematica discreta, probabilidad, estadistica y metodos numericos.
+
+## Licencia
+
+El proyecto se distribuye bajo la licencia [Apache-2.0](LICENSE).
+
 ## Ejecutar
 
 ```bash

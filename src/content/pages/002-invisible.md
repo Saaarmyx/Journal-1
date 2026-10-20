@@ -1,5 +1,8 @@
 ---
-title: Nota entre líneas
+title: Comprobaciones de algebra
 ---
 
-Esta información adicional vive en un archivo Markdown separado. El símbolo ✦ al pie de la página permite revelarla sin agregar otra hoja al diario.
+Para comprobar una ecuacion, sustituye el valor encontrado en la expresion original,
+Para comprobar una fraccion, estima su tamano y simplifica por factores comunes,
+Para comprobar una factorizacion, multiplica de nuevo los factores,
+Para comprobar una unidad, sigue cada conversion hasta cancelar las unidades que no necesitas,
