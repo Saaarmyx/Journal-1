@@ -60,6 +60,21 @@ export function createPage(page, side, nextPage = null) {
     return article
   }
 
+  if (page.kind === 'final-before') {
+    article.classList.add('page--final-before')
+    article.innerHTML = `
+      <div class="page-paper">
+        <div class="invisible-ink" aria-hidden="true">
+          <div class="invisible-content final-before-content">
+            ${page.invisible.title ? `<header class="page-heading"><h2>${renderInline(page.invisible.title)}</h2></header>` : ''}
+            <div class="page-body final-before-body">${page.invisible.html}</div>
+          </div>
+        </div>
+      </div>
+    `
+    return article
+  }
+
   const isOwner = page.number === 1
   const hasSideImage = page.html.includes('polaroid--left') || page.html.includes('polaroid--right')
   const invisibleHasSideImage =
@@ -161,9 +176,9 @@ export function fitPageText(root) {
     const isMobile = window.matchMedia('(max-width: 700px)').matches
     const minimumSize = isMobile ? 13 : 15
     const maximumSize = isMobile ? 25 : 32
-    const images = [...body.querySelectorAll('.polaroid img')]
-    const mediaPolaroids = [...body.querySelectorAll('.journal-media-row .polaroid')]
-    mediaPolaroids.forEach((polaroid) => polaroid.style.removeProperty('--journal-image-width'))
+    const images = [...body.querySelectorAll('.polaroid img, .final-before-image')]
+    const mediaImages = [...body.querySelectorAll('.journal-media-row .polaroid, .journal-media-row .final-before-image')]
+    mediaImages.forEach((image) => image.style.removeProperty('--journal-image-width'))
     const preferredImageHeight = images.length
       ? Math.min(
         isMobile ? Math.min(window.innerHeight * 0.1, 100) : Math.min(window.innerHeight * 0.16, 150),
@@ -171,10 +186,10 @@ export function fitPageText(root) {
       )
       : 0
 
-    mediaPolaroids.forEach((polaroid) => {
-      const columnWidth = polaroid.getBoundingClientRect().width
+    mediaImages.forEach((image) => {
+      const columnWidth = image.getBoundingClientRect().width
       const imageWidth = Math.min(columnWidth * 0.88, body.clientWidth * 0.38)
-      polaroid.style.setProperty('--journal-image-width', `${imageWidth}px`)
+      image.style.setProperty('--journal-image-width', `${imageWidth}px`)
     })
 
     const setImageHeight = (height) => {

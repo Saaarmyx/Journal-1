@@ -8,6 +8,21 @@ const markdownFiles = import.meta.glob('../content/pages/*.md', {
 
 function readPage(path, raw) {
   const filename = path.split('/').pop()
+  if (filename.toLowerCase() === 'final-before.md') {
+    const { meta, body } = parseFrontmatter(raw)
+    const { html, comments } = renderMarkdown(body)
+    const plainImagesHtml = html.replace(
+      /<figure class="polaroid polaroid--(left|right)"><img src="([^"]*)" alt="([^"]*)" loading="lazy"><figcaption>[\s\S]*?<\/figcaption><\/figure>/g,
+      '<img class="final-before-image final-before-image--$1" src="$2" alt="$3" loading="lazy">',
+    )
+    return {
+      id: 'final-before',
+      isFinalBefore: true,
+      kind: 'final-before',
+      invisible: { title: meta.title?.trim() || '', html: plainImagesHtml, comments },
+    }
+  }
+
   if (filename.toLowerCase() === 'final.md') {
     const { meta, body } = parseFrontmatter(raw)
     const { html, comments } = renderMarkdown(body)
@@ -43,10 +58,11 @@ export function loadPages() {
   const found = Object.entries(markdownFiles)
     .map(([path, raw]) => readPage(path, raw))
     .filter(Boolean)
-    .filter((page) => page.isInvisible || page.kind === 'cover' || page.title)
+    .filter((page) => page.isInvisible || page.isFinalBefore || page.kind === 'cover' || page.title)
     .sort((a, b) => a.number - b.number)
   const ending = found.find((page) => page.isEnding)
-  const numberedPages = found.filter((page) => !page.isEnding)
+  const finalBefore = found.find((page) => page.isFinalBefore)
+  const numberedPages = found.filter((page) => !page.isEnding && !page.isFinalBefore)
   const pagesByNumber = new Map(numberedPages.filter((page) => !page.isInvisible).map((page) => [page.number, page]))
   const invisibleByNumber = new Map(numberedPages.filter((page) => page.isInvisible).map((page) => [page.number, page]))
 
@@ -85,6 +101,10 @@ export function loadPages() {
       comments: [],
     }
   })
+
+  if (finalBefore) {
+    pages.push({ ...finalBefore, number: pages.length })
+  }
 
   if (ending) {
     // Keep one ending page. Its left/right position follows naturally from the sequence.

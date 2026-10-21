@@ -388,6 +388,28 @@ button:focus-visible {
   flex-direction: column;
   font-size: clamp(17px, min(1vw, 1.65vh), 20px);
 }
+.final-before-body .journal-media-row {
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  margin-block: clamp(12px, 3vh, 30px);
+}
+.final-before-image {
+  display: block;
+  width: var(--journal-image-width, 100%);
+  max-width: 100%;
+  height: var(--journal-image-height, min(16vh, 150px));
+  max-height: none;
+  object-fit: contain;
+  justify-self: center;
+  filter: saturate(0.75) sepia(0.12);
+}
+.journal-media-row--left > .final-before-image {
+  grid-column: 1;
+  grid-row: 1;
+}
+.journal-media-row--right > .final-before-image {
+  grid-column: 2;
+  grid-row: 1;
+}
 .page-paper--uv-active .invisible-ink {
   opacity: 1;
 }
@@ -920,6 +942,9 @@ button:focus-visible {
     grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
     gap: 8px;
     margin: 10px 0 16px;
+  }
+  .final-before-image {
+    height: var(--journal-image-height, min(10dvh, 100px));
   }
   .journal-media-row .polaroid {
     width: var(--journal-image-width, 100%);
