@@ -1,4 +1,4 @@
-import { createPage, fitPageText } from './Page.js'
+import { createPage, fitPageText, setInvisibleLight } from './Page.js'
 
 const STORAGE_KEY = 'journal-current-page'
 
@@ -47,8 +47,25 @@ export function createBook(initialPages) {
   next.setAttribute('aria-label', 'Doble página siguiente')
   next.innerHTML = '<span aria-hidden="true">›</span>'
 
+  const invisibleToggle = document.createElement('button')
+  invisibleToggle.className = 'invisible-toggle invisible-toggle--global'
+  invisibleToggle.type = 'button'
+  invisibleToggle.hidden = true
+  invisibleToggle.setAttribute('aria-pressed', 'false')
+  invisibleToggle.setAttribute('aria-label', 'Activar luz azul para revelar tinta invisible')
+  invisibleToggle.title = 'Luz azul'
+  invisibleToggle.innerHTML = '&#9830;'
+
   function followingPage(number) {
     return pages.find((page) => page.number > number && page.kind !== 'missing') || null
+  }
+
+  function syncInvisibleToggle() {
+    const visiblePages = [...spread.querySelectorAll('.page')]
+    const hasInvisibleInk = visiblePages.some((page) => page.querySelector('.invisible-ink'))
+    invisibleToggle.hidden = !hasInvisibleInk
+    invisibleToggle.setAttribute('aria-pressed', 'false')
+    invisibleToggle.setAttribute('aria-label', 'Activar luz azul para revelar tinta invisible')
   }
 
   function render() {
@@ -70,6 +87,7 @@ export function createBook(initialPages) {
       next.disabled = pageIndex >= pages.length - 1
       previous.setAttribute('aria-label', 'Página anterior')
       next.setAttribute('aria-label', 'Página siguiente')
+      syncInvisibleToggle()
       requestAnimationFrame(() => fitPageText(spread))
       return
     }
@@ -87,6 +105,7 @@ export function createBook(initialPages) {
     next.disabled = spreadIndex >= maxSpread
     previous.setAttribute('aria-label', 'Doble página anterior')
     next.setAttribute('aria-label', 'Doble página siguiente')
+    syncInvisibleToggle()
     requestAnimationFrame(() => fitPageText(spread))
   }
 
@@ -208,10 +227,16 @@ export function createBook(initialPages) {
 
   previous.addEventListener('click', () => turn(-1))
   next.addEventListener('click', () => turn(1))
+  invisibleToggle.addEventListener('click', () => {
+    const isActive = invisibleToggle.getAttribute('aria-pressed') !== 'true'
+    spread.querySelectorAll('.page').forEach((page) => setInvisibleLight(page, isActive))
+    invisibleToggle.setAttribute('aria-pressed', String(isActive))
+    invisibleToggle.setAttribute('aria-label', isActive ? 'Apagar luz azul' : 'Activar luz azul para revelar tinta invisible')
+  })
   mobileQuery.addEventListener('change', render)
   window.addEventListener('resize', () => requestAnimationFrame(() => fitPageText(spread)))
   book.append(spread, previous, next)
   render()
 
-  return { element: book, turn, updatePages }
+  return { element: book, invisibleToggle, turn, updatePages }
 }

@@ -69,7 +69,6 @@ export function createPage(page, side, nextPage = null) {
 
   const invisibleMarkup = page.invisible
     ? `
-    <button class="invisible-toggle" type="button" aria-pressed="false" aria-label="Activar luz azul para revelar tinta invisible" title="Luz azul">&#9830;</button>
     <div class="invisible-ink" aria-hidden="true">
       <div class="invisible-content">
         <header class="page-heading">
@@ -121,19 +120,9 @@ export function createPage(page, side, nextPage = null) {
     paper.addEventListener('pointerdown', moveLight)
   }
 
-  // Invisible ink toggle (blue light)
-  const toggle = article.querySelector('.invisible-toggle')
+  // Invisible ink follows the pointer while the layout-level light is active.
   const ink = article.querySelector('.invisible-ink')
-  if (toggle && paper && ink) {
-    toggle.addEventListener('click', () => {
-      const isActive = paper.classList.toggle('page-paper--uv-active')
-      toggle.setAttribute('aria-pressed', String(isActive))
-      toggle.setAttribute(
-        'aria-label',
-        isActive ? 'Apagar luz azul' : 'Activar luz azul para revelar tinta invisible',
-      )
-      ink.setAttribute('aria-hidden', String(!isActive))
-    })
+  if (paper && ink) {
     const moveLight = (event) => {
       if (window.matchMedia('(max-width: 700px)').matches) return
       if (!paper.classList.contains('page-paper--uv-active')) return
@@ -146,6 +135,15 @@ export function createPage(page, side, nextPage = null) {
   }
 
   return article
+}
+
+export function setInvisibleLight(article, active) {
+  const paper = article.querySelector('.page-paper')
+  const ink = article.querySelector('.invisible-ink')
+  if (!paper || !ink) return
+
+  paper.classList.toggle('page-paper--uv-active', active)
+  ink.setAttribute('aria-hidden', String(!active))
 }
 
 export function fitPageText(root) {

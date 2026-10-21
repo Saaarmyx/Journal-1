@@ -11,6 +11,7 @@ export function createJournal(root) {
 
   const book = createBook(pages)
   root.querySelector('.book-mount').append(book.element)
+  root.querySelector('.journal-shell').append(book.invisibleToggle)
 
   if (import.meta.hot) {
     import.meta.hot.accept('./loadPages.js', (updatedModule) => {
