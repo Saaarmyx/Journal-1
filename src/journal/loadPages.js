@@ -15,7 +15,7 @@ function readPage(path, raw) {
       id: 'final',
       isEnding: true,
       kind: 'ending',
-      title: meta.title || 'Continúa en el diario',
+      title: meta.title?.trim() || '',
       html,
       comments,
     }
@@ -32,7 +32,7 @@ function readPage(path, raw) {
     number,
     isInvisible,
     kind: meta.kind || (number === 0 ? 'cover' : 'page'),
-    title: meta.title || `Página ${String(number).padStart(2, '0')}`,
+    title: meta.title?.trim() || '',
     date: meta.date || '',
     html,
     comments,
@@ -43,6 +43,7 @@ export function loadPages() {
   const found = Object.entries(markdownFiles)
     .map(([path, raw]) => readPage(path, raw))
     .filter(Boolean)
+    .filter((page) => page.isInvisible || page.kind === 'cover' || page.title)
     .sort((a, b) => a.number - b.number)
   const ending = found.find((page) => page.isEnding)
   const numberedPages = found.filter((page) => !page.isEnding)

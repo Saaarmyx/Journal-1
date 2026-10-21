@@ -11,11 +11,12 @@ function renderComments(comments) {
 export function createPage(page, side, nextPage = null) {
   const article = document.createElement('article')
   article.className = `page page--${page.kind} page--${side}`
+  const accessibleTitle = page.title?.trim()
   article.setAttribute(
     'aria-label',
     page.kind === 'missing'
       ? `Hoja arrancada ${page.number}`
-      : `${page.title}, p&#225;gina ${page.number}`,
+      : `${accessibleTitle ? `${accessibleTitle}, ` : ''}página ${page.number}`,
   )
 
   const moveBlueLight = (event) => {
@@ -52,7 +53,7 @@ export function createPage(page, side, nextPage = null) {
     article.classList.add('page--ending')
     article.innerHTML = `
       <div class="ending-content">
-        <h1>${renderInline(page.title)}</h1>
+        ${page.title ? `<h1>${renderInline(page.title)}</h1>` : ''}
         <div class="ending-volume">${page.html}</div>
       </div>
     `
@@ -69,7 +70,6 @@ export function createPage(page, side, nextPage = null) {
 
   const commentsMarkup = hasComments
     ? `
-    <button class="comments-toggle" type="button" aria-pressed="false" aria-label="Activar luz roja para revelar comentarios" title="Luz roja">&#9670;</button>
     <div class="comments-ink" aria-hidden="true">
       <div class="comments-content">
         <header class="page-heading">
@@ -85,9 +85,10 @@ export function createPage(page, side, nextPage = null) {
     ? `
     <div class="invisible-ink" aria-hidden="true">
       <div class="invisible-content">
+        ${page.invisible.title ? `
         <header class="page-heading">
           <h2>${renderInline(page.invisible.title)}</h2>
-        </header>
+        </header>` : ''}
         <div class="page-body invisible-body${invisibleHasSideImage ? '' : ' page-body--spread'}">${page.invisible.html}</div>
       </div>
     </div>
@@ -97,9 +98,10 @@ export function createPage(page, side, nextPage = null) {
   article.innerHTML = `
     <div class="page-paper${page.invisible ? ' page-paper--has-invisible' : ''}${hasComments ? ' page-paper--has-comments' : ''}">
       <div class="page-content">
+        ${page.title ? `
         <header class="page-heading">
           <h2>${renderInline(page.title)}</h2>
-        </header>
+        </header>` : ''}
         <div class="page-body${isOwner ? ' page-body--owner' : hasSideImage ? '' : ' page-body--spread'}">${page.html}</div>
       </div>
       <span class="page-folio">${String(page.number).padStart(2, '0')}</span>
@@ -111,18 +113,8 @@ export function createPage(page, side, nextPage = null) {
   const paper = article.querySelector('.page-paper')
 
   // Comments toggle (red light)
-  const commentsToggle = article.querySelector('.comments-toggle')
   const commentsInk = article.querySelector('.comments-ink')
-  if (commentsToggle && paper && commentsInk) {
-    commentsToggle.addEventListener('click', () => {
-      const isActive = paper.classList.toggle('page-paper--ir-active')
-      commentsToggle.setAttribute('aria-pressed', String(isActive))
-      commentsToggle.setAttribute(
-        'aria-label',
-        isActive ? 'Apagar luz roja' : 'Activar luz roja para revelar comentarios',
-      )
-      commentsInk.setAttribute('aria-hidden', String(!isActive))
-    })
+  if (paper && commentsInk) {
     const moveLight = (event) => {
       if (window.matchMedia('(max-width: 700px)').matches) return
       if (!paper.classList.contains('page-paper--ir-active')) return
@@ -143,6 +135,15 @@ export function setInvisibleLight(article, active) {
   const ink = article.querySelector('.invisible-ink')
   if (paper) paper.classList.toggle('page-paper--uv-active', active)
   if (ink) ink.setAttribute('aria-hidden', String(!active))
+}
+
+export function setCommentsLight(article, active) {
+  const paper = article.querySelector('.page-paper')
+  const ink = article.querySelector('.comments-ink')
+  if (!paper || !ink) return
+
+  paper.classList.toggle('page-paper--ir-active', active)
+  ink.setAttribute('aria-hidden', String(!active))
 }
 
 export function fitPageText(root) {

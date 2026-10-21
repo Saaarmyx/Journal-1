@@ -1,4 +1,4 @@
-import { createPage, fitPageText, setInvisibleLight } from './Page.js'
+import { createPage, fitPageText, setCommentsLight, setInvisibleLight } from './Page.js'
 
 const STORAGE_KEY = 'journal-current-page'
 
@@ -56,11 +56,28 @@ export function createBook(initialPages) {
   invisibleToggle.title = 'Luz azul'
   invisibleToggle.innerHTML = '&#9830;'
 
+  const commentsToggle = document.createElement('button')
+  commentsToggle.className = 'comments-toggle comments-toggle--global'
+  commentsToggle.type = 'button'
+  commentsToggle.hidden = true
+  commentsToggle.setAttribute('aria-pressed', 'false')
+  commentsToggle.setAttribute('aria-label', 'Activar luz roja para revelar comentarios')
+  commentsToggle.title = 'Luz roja'
+  commentsToggle.innerHTML = '&#9670;'
+
+  const lightControls = document.createElement('div')
+  lightControls.className = 'journal-lights'
+  lightControls.append(invisibleToggle, commentsToggle)
+
   function followingPage(number) {
     return pages.find((page) => page.number > number && page.kind !== 'missing') || null
   }
 
   function syncInvisibleToggle() {
+    const visiblePages = [...spread.querySelectorAll('.page')]
+    commentsToggle.hidden = !visiblePages.some((page) => page.querySelector('.comments-ink'))
+    commentsToggle.setAttribute('aria-pressed', 'false')
+    commentsToggle.setAttribute('aria-label', 'Activar luz roja para revelar comentarios')
     invisibleToggle.hidden = false
     invisibleToggle.setAttribute('aria-pressed', 'false')
     invisibleToggle.setAttribute('aria-label', 'Activar luz azul sobre el diario')
@@ -231,10 +248,16 @@ export function createBook(initialPages) {
     invisibleToggle.setAttribute('aria-pressed', String(isActive))
     invisibleToggle.setAttribute('aria-label', isActive ? 'Apagar luz azul' : 'Activar luz azul sobre el diario')
   })
+  commentsToggle.addEventListener('click', () => {
+    const isActive = commentsToggle.getAttribute('aria-pressed') !== 'true'
+    spread.querySelectorAll('.page').forEach((page) => setCommentsLight(page, isActive))
+    commentsToggle.setAttribute('aria-pressed', String(isActive))
+    commentsToggle.setAttribute('aria-label', isActive ? 'Apagar luz roja' : 'Activar luz roja para revelar comentarios')
+  })
   mobileQuery.addEventListener('change', render)
   window.addEventListener('resize', () => requestAnimationFrame(() => fitPageText(spread)))
   book.append(spread, previous, next)
   render()
 
-  return { element: book, invisibleToggle, turn, updatePages }
+  return { element: book, lightControls, turn, updatePages }
 }

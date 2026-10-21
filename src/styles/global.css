@@ -308,11 +308,24 @@ button:focus-visible {
   display: none;
 }
 .invisible-toggle--global {
+  position: relative;
+  inset: auto;
+}
+.journal-lights {
   position: fixed;
   z-index: 20;
   top: max(14px, env(safe-area-inset-top));
   right: max(14px, env(safe-area-inset-right));
-  left: auto;
+  display: flex;
+  gap: 8px;
+}
+.journal-lights .invisible-toggle,
+.journal-lights .comments-toggle {
+  position: relative;
+  inset: auto;
+}
+.journal-lights button[hidden] {
+  display: none;
 }
 .invisible-toggle:hover {
   background: #fff2d6;
@@ -412,6 +425,10 @@ button:focus-visible {
   font-size: 21px;
   cursor: pointer;
   box-shadow: 0 2px 6px #3c2d1d33;
+}
+.comments-toggle--global {
+  position: relative;
+  inset: auto;
 }
 .comments-toggle:hover {
   background: #fff2d6;
