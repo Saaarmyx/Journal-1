@@ -1,3 +1,5 @@
+import { renderInline } from '../markdown.js'
+
 const escapeText = (text = '') =>
   text.replace(/[&<>"']/g, (char) => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": "'" })[char])
 
@@ -50,7 +52,7 @@ export function createPage(page, side, nextPage = null) {
     article.classList.add('page--ending')
     article.innerHTML = `
       <div class="ending-content">
-        <h1>${escapeText(page.title)}</h1>
+        <h1>${renderInline(page.title)}</h1>
         <div class="ending-volume">${page.html}</div>
       </div>
     `
@@ -84,7 +86,7 @@ export function createPage(page, side, nextPage = null) {
     <div class="invisible-ink" aria-hidden="true">
       <div class="invisible-content">
         <header class="page-heading">
-          <h2>${escapeText(page.invisible.title)}</h2>
+          <h2>${renderInline(page.invisible.title)}</h2>
         </header>
         <div class="page-body invisible-body${invisibleHasSideImage ? '' : ' page-body--spread'}">${page.invisible.html}</div>
       </div>
@@ -96,7 +98,7 @@ export function createPage(page, side, nextPage = null) {
     <div class="page-paper${page.invisible ? ' page-paper--has-invisible' : ''}${hasComments ? ' page-paper--has-comments' : ''}">
       <div class="page-content">
         <header class="page-heading">
-          <h2>${escapeText(page.title)}</h2>
+          <h2>${renderInline(page.title)}</h2>
         </header>
         <div class="page-body${isOwner ? ' page-body--owner' : hasSideImage ? '' : ' page-body--spread'}">${page.html}</div>
       </div>

@@ -12,7 +12,7 @@ function safeUrl(value, image = false) {
   return trimmed
 }
 
-function renderInline(source) {
+export function renderInline(source) {
   const chunks = []
   const hold = (html) => `\u0000${chunks.push(html) - 1}\u0000`
 
