@@ -159,46 +159,74 @@ export function fitPageText(root) {
     const baseSize = Number.parseFloat(getComputedStyle(content).fontSize) || 18
     const fits = () => body.scrollHeight <= body.clientHeight + 1
     const isMobile = window.matchMedia('(max-width: 700px)').matches
-    const minimumSize = 10
+    const minimumSize = isMobile ? 13 : 15
     const maximumSize = isMobile ? 25 : 32
     const images = [...body.querySelectorAll('.polaroid img')]
     const preferredImageHeight = images.length
       ? Math.min(
-        isMobile ? Math.min(window.innerHeight * 0.12, 120) : Math.min(window.innerHeight * 0.28, 240),
-        (body.clientHeight / images.length) * 0.72,
+        isMobile ? Math.min(window.innerHeight * 0.1, 100) : Math.min(window.innerHeight * 0.16, 150),
+        (body.clientHeight / images.length) * 0.45,
       )
       : 0
 
-    const applyScale = (scale) => {
-      const fontSize = scale <= 1
-        ? minimumSize + (baseSize - minimumSize) * scale
-        : baseSize + (maximumSize - baseSize) * ((scale - 1) / 0.5)
-      content.style.fontSize = `${Math.min(maximumSize, fontSize)}px`
+    const setImageHeight = (height) => {
+      if (images.length) content.style.setProperty('--journal-image-height', `${Math.max(0, height)}px`)
+    }
 
-      if (images.length) {
-        const imageHeight = Math.min(preferredImageHeight * scale, body.clientHeight * 0.35)
-        content.style.setProperty('--journal-image-height', `${Math.max(0, imageHeight)}px`)
+    content.style.fontSize = `${baseSize}px`
+    setImageHeight(0)
+
+    if (!fits()) {
+      content.classList.add('page-content--dense')
+      if (!fits()) {
+        let low = minimumSize
+        let high = baseSize
+        let bestFit = minimumSize
+
+        for (let attempt = 0; attempt < 12; attempt += 1) {
+          const size = (low + high) / 2
+          content.style.fontSize = `${size}px`
+          if (fits()) {
+            bestFit = size
+            low = size
+          } else {
+            high = size
+          }
+        }
+
+        content.style.fontSize = `${bestFit}px`
       }
     }
 
-    applyScale(1)
-    if (!fits()) content.classList.add('page-content--dense')
+    let imageHeight = 0
+    if (images.length) {
+      const availableImageSpace = Math.max(0, body.clientHeight - body.scrollHeight)
+      imageHeight = Math.min(preferredImageHeight, Math.max(0, availableImageSpace - images.length * 4) / images.length)
+      setImageHeight(imageHeight)
 
-    let low = 0
-    let high = 1.5
-    let bestFit = 0
-
-    for (let attempt = 0; attempt < 12; attempt += 1) {
-      const size = (low + high) / 2
-      applyScale(size)
-      if (fits()) {
-        bestFit = size
-        low = size
-      } else {
-        high = size
+      while (!fits() && imageHeight > 0) {
+        imageHeight = Math.max(0, imageHeight - 2)
+        setImageHeight(imageHeight)
       }
     }
 
-    applyScale(bestFit)
+    if (!images.length || imageHeight >= preferredImageHeight - 1) {
+      let low = Number.parseFloat(content.style.fontSize)
+      let high = maximumSize
+      let bestFit = low
+
+      for (let attempt = 0; attempt < 12; attempt += 1) {
+        const size = (low + high) / 2
+        content.style.fontSize = `${size}px`
+        if (fits()) {
+          bestFit = size
+          low = size
+        } else {
+          high = size
+        }
+      }
+
+      content.style.fontSize = `${bestFit}px`
+    }
   })
 }
