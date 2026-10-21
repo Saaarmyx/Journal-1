@@ -102,7 +102,32 @@ export function renderMarkdown(markdown) {
       continue
     }
 
+    const imageSide = line.match(/\s+\{(left|right)\}\s*$/)?.[1]
     if (/^\s*!\[([^\]]*)\]\(([^\s)]+)(?:\s+(?:"([^"]*)"|'([^']*)'|\(([^)]*)\)))?\)(?:\s+\{(?:left|right)\})?\s*$/.test(line)) {
+      if (imageSide) {
+        const textParagraphs = []
+        let paragraph = []
+        index += 1
+
+        while (index < lines.length) {
+          const nextLine = lines[index]
+          if (!nextLine.trim()) {
+            if (paragraph.length) textParagraphs.push(paragraph)
+            paragraph = []
+            index += 1
+            continue
+          }
+
+          if (/^(#{1,3})\s+|^```|^>\s?|^\s*(?:[-*+]\s+|\d+\.\s+)|^\s*!\[|^\s*([-*_])(?:\s*\1){2,}\s*$/.test(nextLine)) break
+          paragraph.push(nextLine)
+          index += 1
+        }
+        if (paragraph.length) textParagraphs.push(paragraph)
+
+        output.push(`<div class="journal-media-row journal-media-row--${imageSide}">${renderInline(line.trim())}<div class="journal-media-copy">${textParagraphs.map((linesInParagraph) => `<p>${linesInParagraph.map(renderInline).join('<br>')}</p>`).join('')}</div></div>`)
+        continue
+      }
+
       output.push(renderInline(line.trim()))
       index += 1
       continue
