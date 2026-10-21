@@ -49,9 +49,14 @@ export function loadPages() {
   const numberedPages = found.filter((page) => !page.isEnding)
   const pagesByNumber = new Map(numberedPages.filter((page) => !page.isInvisible).map((page) => [page.number, page]))
   const invisibleByNumber = new Map(numberedPages.filter((page) => page.isInvisible).map((page) => [page.number, page]))
-  const lastNumber = Math.max(journalConfig.lastPageNumber, ...pagesByNumber.keys(), ...invisibleByNumber.keys(), 1)
 
-  const pages = Array.from({ length: lastNumber + 1 }, (_, number) => {
+  // Find the last real page number (non-invisible, non-ending)
+  const realPageNumbers = [...pagesByNumber.keys()].filter(n => n > 0)
+  const lastRealPage = realPageNumbers.length > 0 ? Math.max(...realPageNumbers) : 0
+  const configuredLastPage = journalConfig.lastPageNumber
+
+  // Build pages up to lastRealPage, filling gaps with 'missing' (torn) pages
+  const pages = Array.from({ length: lastRealPage + 1 }, (_, number) => {
     const page = pagesByNumber.get(number)
     if (page) {
       const invisible = invisibleByNumber.get(number)
@@ -69,6 +74,7 @@ export function loadPages() {
         invisible: { title: invisible.title, html: invisible.html, comments: invisible.comments },
       }
     }
+    // Gap in the middle -> torn page
     return {
       id: `missing-${number}`,
       number,
@@ -79,12 +85,24 @@ export function loadPages() {
     }
   })
 
+  // If journal ends before configured last page, add ONE torn page to indicate continuation
+  if (lastRealPage < configuredLastPage) {
+    pages.push({
+      id: `missing-${lastRealPage + 1}`,
+      number: lastRealPage + 1,
+      kind: 'missing',
+      title: 'Hoja arrancada',
+      html: '',
+      comments: [],
+    })
+  }
+
   if (ending) {
     // Keep the closing page on the right side of a desktop spread.
     if (pages.length % 2 === 0) {
-      pages.push({ id: 'ending-spacer', number: lastNumber + 1, kind: 'blank', title: '', html: '' })
+      pages.push({ id: 'ending-spacer', number: pages.length, kind: 'blank', title: '', html: '', comments: [] })
     }
-    pages.push({ ...ending, number: lastNumber + pages.length - lastNumber })
+    pages.push({ ...ending, number: pages.length, comments: ending.comments || [] })
   }
 
   return pages
