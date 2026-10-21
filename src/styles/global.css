@@ -755,8 +755,9 @@ button:focus-visible {
 .polaroid img {
   display: block;
   width: 100%;
-  max-height: 42vh;
-  object-fit: cover;
+  height: var(--journal-image-height, min(28vh, 240px));
+  max-height: none;
+  object-fit: contain;
   filter: sepia(0.18) saturate(0.8) contrast(0.96);
 }
 .polaroid--left {
@@ -926,11 +927,11 @@ button:focus-visible {
     padding: 5px 5px 7px;
   }
   .journal-media-row .polaroid img {
-    height: min(12dvh, 110px);
+    height: var(--journal-image-height, min(12dvh, 110px));
     max-height: none;
   }
   .polaroid img {
-    height: min(12dvh, 120px);
+    height: var(--journal-image-height, min(12dvh, 120px));
     max-height: none;
     object-fit: contain;
   }

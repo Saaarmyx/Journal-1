@@ -155,22 +155,42 @@ export function fitPageText(root) {
 
     content.classList.remove('page-content--dense')
     content.style.removeProperty('font-size')
-    const baseSize = Number.parseFloat(getComputedStyle(content).fontSize)
+    content.style.removeProperty('--journal-image-height')
+    const baseSize = Number.parseFloat(getComputedStyle(content).fontSize) || 18
     const fits = () => body.scrollHeight <= body.clientHeight + 1
     const isMobile = window.matchMedia('(max-width: 700px)').matches
     const minimumSize = 10
     const maximumSize = isMobile ? 25 : 32
-    const needsDenseSpacing = !fits()
+    const images = [...body.querySelectorAll('.polaroid img')]
+    const preferredImageHeight = images.length
+      ? Math.min(
+        isMobile ? Math.min(window.innerHeight * 0.12, 120) : Math.min(window.innerHeight * 0.28, 240),
+        (body.clientHeight / images.length) * 0.72,
+      )
+      : 0
 
-    if (needsDenseSpacing) content.classList.add('page-content--dense')
+    const applyScale = (scale) => {
+      const fontSize = scale <= 1
+        ? minimumSize + (baseSize - minimumSize) * scale
+        : baseSize + (maximumSize - baseSize) * ((scale - 1) / 0.5)
+      content.style.fontSize = `${Math.min(maximumSize, fontSize)}px`
 
-    let low = needsDenseSpacing ? minimumSize : baseSize
-    let high = needsDenseSpacing ? baseSize : maximumSize
-    let bestFit = low
+      if (images.length) {
+        const imageHeight = Math.min(preferredImageHeight * scale, body.clientHeight * 0.35)
+        content.style.setProperty('--journal-image-height', `${Math.max(0, imageHeight)}px`)
+      }
+    }
+
+    applyScale(1)
+    if (!fits()) content.classList.add('page-content--dense')
+
+    let low = 0
+    let high = 1.5
+    let bestFit = 0
 
     for (let attempt = 0; attempt < 12; attempt += 1) {
       const size = (low + high) / 2
-      content.style.fontSize = `${size}px`
+      applyScale(size)
       if (fits()) {
         bestFit = size
         low = size
@@ -179,6 +199,6 @@ export function fitPageText(root) {
       }
     }
 
-    content.style.fontSize = `${bestFit}px`
+    applyScale(bestFit)
   })
 }
