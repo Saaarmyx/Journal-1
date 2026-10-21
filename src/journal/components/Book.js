@@ -56,7 +56,7 @@ export function createBook(initialPages) {
   flashlight.innerHTML = `
     <svg viewBox="0 0 144 80" aria-hidden="true" focusable="false">
       <defs>
-        <linearGradient id="uv-beam" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id="uv-beam" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#fa86ff" stop-opacity=".62" />
           <stop offset="1" stop-color="#73cfff" stop-opacity=".04" />
         </linearGradient>
@@ -65,14 +65,14 @@ export function createBook(initialPages) {
           <stop offset="1" stop-color="#19151e" />
         </linearGradient>
       </defs>
-      <path d="M89 25 142 8v64L89 55Z" fill="url(#uv-beam)" />
-      <rect x="16" y="27" width="77" height="27" rx="11" fill="url(#uv-body)" stroke="#100e14" stroke-width="3" />
-      <rect x="8" y="31" width="14" height="19" rx="5" fill="#28212e" stroke="#100e14" stroke-width="3" />
-      <path d="M68 23h18q8 0 8 8v19q0 8-8 8H68Z" fill="#40324c" stroke="#17121d" stroke-width="3" />
-      <path d="M88 24q7 0 7 8v16q0 8-7 8Z" fill="#ed75f3" stroke="#54215e" stroke-width="3" />
-      <path d="M91 29q3 0 3 4v13q0 4-3 4Z" fill="#fff0ff" opacity=".9" />
-      <path d="M34 32v17m8-17v17m8-17v17" stroke="#867394" stroke-width="2" stroke-linecap="round" opacity=".7" />
-      <rect x="53" y="20" width="12" height="5" rx="2.5" fill="#f28af8" stroke="#25162a" stroke-width="2" />
+      <path d="M26 51 5 78h134l-34-27Z" fill="url(#uv-beam)" />
+      <rect x="17" y="17" width="83" height="37" rx="12" fill="url(#uv-body)" stroke="#100e14" stroke-width="3" />
+      <rect x="8" y="23" width="17" height="25" rx="6" fill="#28212e" stroke="#100e14" stroke-width="3" />
+      <path d="M68 13h23q11 0 11 11v20q0 10-10 10H68Z" fill="#40324c" stroke="#17121d" stroke-width="3" />
+      <path d="M67 48h36v7q0 4-4 4H71q-4 0-4-4Z" fill="#ed75f3" stroke="#54215e" stroke-width="2" />
+      <path d="M73 51h24v3H73Z" fill="#fff0ff" opacity=".9" />
+      <path d="M34 25v21m9-21v21m9-21v21" stroke="#867394" stroke-width="2" stroke-linecap="round" opacity=".7" />
+      <rect x="52" y="12" width="13" height="6" rx="3" fill="#f28af8" stroke="#25162a" stroke-width="2" />
     </svg>`
 
   const commentsToggle = document.createElement('button')
@@ -111,11 +111,11 @@ export function createBook(initialPages) {
       if (isLit) anyPageLit = true
       if (!isLit) return
 
-      const height = Math.min(260, Math.max(120, bounds.height * 0.28))
+      const height = Math.min(300, Math.max(140, bounds.height * 0.38))
       for (const element of [page, surface]) {
         element.style.setProperty('--uv-y', `${y}px`)
         element.style.setProperty('--uv-height', `${height}px`)
-        element.style.setProperty('--uv-top', `${y - height / 2}px`)
+        element.style.setProperty('--uv-top', `${y}px`)
       }
     })
     blueLightOn = anyPageLit
