@@ -50,9 +50,9 @@ export function createBook(initialPages) {
   const invisibleToggle = document.createElement('button')
   invisibleToggle.className = 'invisible-toggle invisible-toggle--global'
   invisibleToggle.type = 'button'
-  invisibleToggle.hidden = true
+  invisibleToggle.hidden = false
   invisibleToggle.setAttribute('aria-pressed', 'false')
-  invisibleToggle.setAttribute('aria-label', 'Activar luz azul para revelar tinta invisible')
+  invisibleToggle.setAttribute('aria-label', 'Activar luz azul sobre el diario')
   invisibleToggle.title = 'Luz azul'
   invisibleToggle.innerHTML = '&#9830;'
 
@@ -61,11 +61,9 @@ export function createBook(initialPages) {
   }
 
   function syncInvisibleToggle() {
-    const visiblePages = [...spread.querySelectorAll('.page')]
-    const hasInvisibleInk = visiblePages.some((page) => page.querySelector('.invisible-ink'))
-    invisibleToggle.hidden = !hasInvisibleInk
+    invisibleToggle.hidden = false
     invisibleToggle.setAttribute('aria-pressed', 'false')
-    invisibleToggle.setAttribute('aria-label', 'Activar luz azul para revelar tinta invisible')
+    invisibleToggle.setAttribute('aria-label', 'Activar luz azul sobre el diario')
   }
 
   function render() {
@@ -231,7 +229,7 @@ export function createBook(initialPages) {
     const isActive = invisibleToggle.getAttribute('aria-pressed') !== 'true'
     spread.querySelectorAll('.page').forEach((page) => setInvisibleLight(page, isActive))
     invisibleToggle.setAttribute('aria-pressed', String(isActive))
-    invisibleToggle.setAttribute('aria-label', isActive ? 'Apagar luz azul' : 'Activar luz azul para revelar tinta invisible')
+    invisibleToggle.setAttribute('aria-label', isActive ? 'Apagar luz azul' : 'Activar luz azul sobre el diario')
   })
   mobileQuery.addEventListener('change', render)
   window.addEventListener('resize', () => requestAnimationFrame(() => fitPageText(spread)))

@@ -16,6 +16,18 @@ export function createPage(page, side, nextPage = null) {
       : `${page.title}, p&#225;gina ${page.number}`,
   )
 
+  const moveBlueLight = (event) => {
+    if (window.matchMedia('(max-width: 700px)').matches) return
+    if (!article.classList.contains('page--uv-active')) return
+
+    const surface = event.target.closest('.page-paper') || article
+    const bounds = surface.getBoundingClientRect()
+    surface.style.setProperty('--uv-x', `${event.clientX - bounds.left}px`)
+    surface.style.setProperty('--uv-y', `${event.clientY - bounds.top}px`)
+  }
+  article.addEventListener('pointermove', moveBlueLight)
+  article.addEventListener('pointerdown', moveBlueLight)
+
   if (page.kind === 'missing') {
     if (!nextPage) article.classList.add('page--missing-end')
     article.innerHTML = `
@@ -120,30 +132,15 @@ export function createPage(page, side, nextPage = null) {
     paper.addEventListener('pointerdown', moveLight)
   }
 
-  // Invisible ink follows the pointer while the layout-level light is active.
-  const ink = article.querySelector('.invisible-ink')
-  if (paper && ink) {
-    const moveLight = (event) => {
-      if (window.matchMedia('(max-width: 700px)').matches) return
-      if (!paper.classList.contains('page-paper--uv-active')) return
-      const bounds = paper.getBoundingClientRect()
-      paper.style.setProperty('--uv-x', `${event.clientX - bounds.left}px`)
-      paper.style.setProperty('--uv-y', `${event.clientY - bounds.top}px`)
-    }
-    paper.addEventListener('pointermove', moveLight)
-    paper.addEventListener('pointerdown', moveLight)
-  }
-
   return article
 }
 
 export function setInvisibleLight(article, active) {
+  article.classList.toggle('page--uv-active', active)
   const paper = article.querySelector('.page-paper')
   const ink = article.querySelector('.invisible-ink')
-  if (!paper || !ink) return
-
-  paper.classList.toggle('page-paper--uv-active', active)
-  ink.setAttribute('aria-hidden', String(!active))
+  if (paper) paper.classList.toggle('page-paper--uv-active', active)
+  if (ink) ink.setAttribute('aria-hidden', String(!active))
 }
 
 export function fitPageText(root) {
