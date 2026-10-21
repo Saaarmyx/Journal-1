@@ -1,4 +1,3 @@
-import { journalConfig } from '../config.js'
 import { parseFrontmatter, renderMarkdown } from './markdown.js'
 
 const markdownFiles = import.meta.glob('../content/pages/*.md', {
@@ -50,13 +49,14 @@ export function loadPages() {
   const pagesByNumber = new Map(numberedPages.filter((page) => !page.isInvisible).map((page) => [page.number, page]))
   const invisibleByNumber = new Map(numberedPages.filter((page) => page.isInvisible).map((page) => [page.number, page]))
 
-  // Find the last real page number (non-invisible, non-ending)
-  const realPageNumbers = [...pagesByNumber.keys()].filter(n => n > 0)
-  const lastRealPage = realPageNumbers.length > 0 ? Math.max(...realPageNumbers) : 0
-  const configuredLastPage = journalConfig.lastPageNumber
+  // The sequence is defined by the files that exist, including invisible-only pages.
+  // Gaps before the last authored page are torn pages; nothing is invented afterward.
+  const authoredPageNumbers = [...pagesByNumber.keys(), ...invisibleByNumber.keys()]
+  const lastPageNumber = authoredPageNumbers.length > 0
+    ? Math.max(...authoredPageNumbers)
+    : 0
 
-  // Build pages up to lastRealPage, filling gaps with 'missing' (torn) pages
-  const pages = Array.from({ length: lastRealPage + 1 }, (_, number) => {
+  const pages = Array.from({ length: lastPageNumber + 1 }, (_, number) => {
     const page = pagesByNumber.get(number)
     if (page) {
       const invisible = invisibleByNumber.get(number)
@@ -74,7 +74,7 @@ export function loadPages() {
         invisible: { title: invisible.title, html: invisible.html, comments: invisible.comments },
       }
     }
-    // Gap in the middle -> torn page
+    // A missing number before a later authored page represents a torn page.
     return {
       id: `missing-${number}`,
       number,
@@ -85,23 +85,8 @@ export function loadPages() {
     }
   })
 
-  // If journal ends before configured last page, add ONE torn page to indicate continuation
-  if (lastRealPage < configuredLastPage) {
-    pages.push({
-      id: `missing-${lastRealPage + 1}`,
-      number: lastRealPage + 1,
-      kind: 'missing',
-      title: 'Hoja arrancada',
-      html: '',
-      comments: [],
-    })
-  }
-
   if (ending) {
-    // Keep the closing page on the right side of a desktop spread.
-    if (pages.length % 2 === 0) {
-      pages.push({ id: 'ending-spacer', number: pages.length, kind: 'blank', title: '', html: '', comments: [] })
-    }
+    // Keep one ending page. Its left/right position follows naturally from the sequence.
     pages.push({ ...ending, number: pages.length, comments: ending.comments || [] })
   }
 

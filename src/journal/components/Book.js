@@ -79,7 +79,7 @@ export function createBook(pages) {
       gutter,
       right
         ? createPage(right, 'right', right.kind === 'missing' ? followingPage(right.number) : null)
-        : createPage({ kind: 'missing', number: left.number + 1 }, 'right', followingPage(left.number + 1)),
+        : createPage({ kind: 'blank', number: left.number + 1 }, 'right'),
     )
     previous.disabled = spreadIndex === 0
     next.disabled = spreadIndex >= maxSpread
