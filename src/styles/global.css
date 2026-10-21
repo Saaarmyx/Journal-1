@@ -142,7 +142,7 @@ button:focus-visible {
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  font-size: clamp(18px, 1.65vw, 24px);
+  font-size: clamp(17px, min(1vw, 1.65vh), 20px);
 }
 .page-heading {
   position: relative;
@@ -196,6 +196,16 @@ button:focus-visible {
 }
 .page-body p {
   margin: 0 0 0.55em;
+}
+.page-content--dense .page-body {
+  line-height: 1.08;
+}
+.page-content--dense .page-body p {
+  margin-bottom: 0.08em;
+}
+.page-content--dense .page-body h2,
+.page-content--dense .page-body h3 {
+  margin-block: 0.3em 0.12em;
 }
 .page-body h2,
 .page-body h3 {
@@ -336,7 +346,7 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   flex-direction: column;
-  font-size: clamp(18px, 1.65vw, 24px);
+  font-size: clamp(17px, min(1vw, 1.65vh), 20px);
 }
 .page-paper--uv-active .invisible-ink {
   opacity: 1;
@@ -435,7 +445,7 @@ button:focus-visible {
   width: 100%;
   height: 100%;
   flex-direction: column;
-  font-size: clamp(18px, 1.65vw, 24px);
+  font-size: clamp(17px, min(1vw, 1.65vh), 20px);
 }
 .page-paper--ir-active .comments-ink {
   opacity: 1;
@@ -723,13 +733,13 @@ button:focus-visible {
     padding: 22px 16px 38px;
   }
   .invisible-content {
-    font-size: clamp(16px, 3.2vw, 19px);
+    font-size: clamp(17px, min(5.2vw, 2.3vh), 20px);
   }
   .comments-ink {
     padding: 22px 16px 38px;
   }
   .comments-content {
-    font-size: clamp(16px, 3.2vw, 19px);
+    font-size: clamp(17px, min(5.2vw, 2.3vh), 20px);
   }
   .page-paper--ir-active::before {
     background: radial-gradient(
@@ -762,7 +772,7 @@ button:focus-visible {
     line-height: 1.45;
   }
   .page-content {
-    font-size: clamp(16px, 3.2vw, 19px);
+    font-size: clamp(17px, min(5.2vw, 2.3vh), 20px);
   }
   .turn-control {
     top: 50%;

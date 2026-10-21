@@ -147,3 +147,37 @@ export function createPage(page, side, nextPage = null) {
 
   return article
 }
+
+export function fitPageText(root) {
+  const contentBlocks = root.querySelectorAll('.page-content, .invisible-content, .comments-content')
+
+  contentBlocks.forEach((content) => {
+    const body = content.querySelector('.page-body')
+    if (!body) return
+
+    content.classList.remove('page-content--dense')
+    content.style.removeProperty('font-size')
+    const baseSize = Number.parseFloat(getComputedStyle(content).fontSize)
+    const fits = () => body.scrollHeight <= body.clientHeight + 1
+
+    if (fits()) return
+
+    content.classList.add('page-content--dense')
+    let low = 10
+    let high = baseSize
+    let bestFit = null
+
+    for (let attempt = 0; attempt < 9; attempt += 1) {
+      const size = (low + high) / 2
+      content.style.fontSize = `${size}px`
+      if (fits()) {
+        bestFit = size
+        low = size
+      } else {
+        high = size
+      }
+    }
+
+    content.style.fontSize = `${bestFit ?? 10}px`
+  })
+}

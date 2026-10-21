@@ -1,4 +1,4 @@
-import { createPage } from './Page.js'
+import { createPage, fitPageText } from './Page.js'
 
 const STORAGE_KEY = 'journal-current-page'
 
@@ -70,6 +70,7 @@ export function createBook(initialPages) {
       next.disabled = pageIndex >= pages.length - 1
       previous.setAttribute('aria-label', 'Página anterior')
       next.setAttribute('aria-label', 'Página siguiente')
+      requestAnimationFrame(() => fitPageText(spread))
       return
     }
 
@@ -86,6 +87,7 @@ export function createBook(initialPages) {
     next.disabled = spreadIndex >= maxSpread
     previous.setAttribute('aria-label', 'Doble página anterior')
     next.setAttribute('aria-label', 'Doble página siguiente')
+    requestAnimationFrame(() => fitPageText(spread))
   }
 
   function turn(amount) {
@@ -207,6 +209,7 @@ export function createBook(initialPages) {
   previous.addEventListener('click', () => turn(-1))
   next.addEventListener('click', () => turn(1))
   mobileQuery.addEventListener('change', render)
+  window.addEventListener('resize', () => requestAnimationFrame(() => fitPageText(spread)))
   book.append(spread, previous, next)
   render()
 
