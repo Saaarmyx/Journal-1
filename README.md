@@ -10,7 +10,7 @@ Esta edición reúne apuntes personales de matemáticas: desde aritmética y ál
 
 ## Demostración
 
-No hay una demo pública desplegada. Puedes abrir el diario localmente siguiendo los pasos de instalación; Vite muestra la dirección al iniciar el servidor, normalmente `http://localhost:5174`.
+Accediendo a este enlace: [Vista previa](https://journal-1-mu.vercel.app)
 
 ## Características
 
