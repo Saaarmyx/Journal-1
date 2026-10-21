@@ -162,12 +162,20 @@ export function fitPageText(root) {
     const minimumSize = isMobile ? 13 : 15
     const maximumSize = isMobile ? 25 : 32
     const images = [...body.querySelectorAll('.polaroid img')]
+    const mediaPolaroids = [...body.querySelectorAll('.journal-media-row .polaroid')]
+    mediaPolaroids.forEach((polaroid) => polaroid.style.removeProperty('--journal-image-width'))
     const preferredImageHeight = images.length
       ? Math.min(
         isMobile ? Math.min(window.innerHeight * 0.1, 100) : Math.min(window.innerHeight * 0.16, 150),
         (body.clientHeight / images.length) * 0.45,
       )
       : 0
+
+    mediaPolaroids.forEach((polaroid) => {
+      const columnWidth = polaroid.getBoundingClientRect().width
+      const imageWidth = Math.min(columnWidth * 0.88, body.clientWidth * 0.38)
+      polaroid.style.setProperty('--journal-image-width', `${imageWidth}px`)
+    })
 
     const setImageHeight = (height) => {
       if (images.length) content.style.setProperty('--journal-image-height', `${Math.max(0, height)}px`)
