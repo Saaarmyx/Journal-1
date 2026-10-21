@@ -1,11 +1,15 @@
 ---
-title: Santiago Sarmiento
+title: #01
 ---
 
-Yo voy a estudiar una idea a la vez, primero intentare resolver un problema sin mirar apuntes,
+Te lo juro no se ni porque mierda hago esto, la idea principal es descargar el conocimiento en algun lado y que mejor que un lugar donde nada se pierde.
 
-Si me atasco, voy a escribir exactamente que paso no entiendo, luego estudiare un ejemplo y lo repetire sin mirar,
+Cierto?
 
-No voy a esconder los errores, anotare que supuse, que regla use y como puedo comprobar el resultado,
+La idea es escribir, entender y practicar
 
-Al final de cada tema volvere a resolver los ejercicios dias despues, si puedo explicarlos con mis palabras, sabre que avance,
+Voy a poner todo el empeño posible viendo tutoriales y tratar de hacerlo todo free.
+
+al final voy a resolver todo nuevamente solo por seguridad
+
+No puedo dormir muy bien, me toca jugar o ver tiktok y eso es un grave problema ya que no puedo funcionar del todo bien asi
