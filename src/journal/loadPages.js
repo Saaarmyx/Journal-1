@@ -11,12 +11,14 @@ function readPage(path, raw) {
   const filename = path.split('/').pop()
   if (filename.toLowerCase() === 'final.md') {
     const { meta, body } = parseFrontmatter(raw)
+    const { html, comments } = renderMarkdown(body)
     return {
       id: 'final',
       isEnding: true,
       kind: 'ending',
       title: meta.title || 'Continúa en el diario',
-      html: renderMarkdown(body),
+      html,
+      comments,
     }
   }
   const match = filename.match(/^(\d+)(?:-(invisible))?\.md$/i)
@@ -25,6 +27,7 @@ function readPage(path, raw) {
   const number = Number(match[1])
   const isInvisible = Boolean(match[2])
   const { meta, body } = parseFrontmatter(raw)
+  const { html, comments } = renderMarkdown(body)
   return {
     id: filename.replace(/\.md$/i, ''),
     number,
@@ -32,7 +35,8 @@ function readPage(path, raw) {
     kind: meta.kind || (number === 0 ? 'cover' : 'page'),
     title: meta.title || `Página ${String(number).padStart(2, '0')}`,
     date: meta.date || '',
-    html: renderMarkdown(body),
+    html,
+    comments,
   }
 }
 
@@ -51,7 +55,7 @@ export function loadPages() {
     const page = pagesByNumber.get(number)
     if (page) {
       const invisible = invisibleByNumber.get(number)
-      return invisible ? { ...page, invisible: { title: invisible.title, html: invisible.html } } : page
+      return invisible ? { ...page, invisible: { title: invisible.title, html: invisible.html, comments: invisible.comments } } : page
     }
     const invisible = invisibleByNumber.get(number)
     if (invisible) {
@@ -61,7 +65,8 @@ export function loadPages() {
         kind: 'page',
         title: '',
         html: '',
-        invisible: { title: invisible.title, html: invisible.html },
+        comments: [],
+        invisible: { title: invisible.title, html: invisible.html, comments: invisible.comments },
       }
     }
     return {
@@ -70,6 +75,7 @@ export function loadPages() {
       kind: 'missing',
       title: 'Hoja arrancada',
       html: '',
+      comments: [],
     }
   })
 

@@ -54,8 +54,18 @@ export function parseFrontmatter(markdown) {
   return { meta, body: match[2] }
 }
 
+function extractComments(markdown) {
+  const comments = []
+  const cleaned = markdown.replace(/<!--([\s\S]*?)-->/g, (match, content) => {
+    comments.push(content.trim())
+    return ''
+  })
+  return { markdown: cleaned, comments }
+}
+
 export function renderMarkdown(markdown) {
-  const lines = markdown.replaceAll('\r\n', '\n').split('\n')
+  const { markdown: cleanedMarkdown, comments } = extractComments(markdown)
+  const lines = cleanedMarkdown.replaceAll('\r\n', '\n').split('\n')
   const output = []
   let index = 0
 
@@ -123,5 +133,5 @@ export function renderMarkdown(markdown) {
     output.push(`<p>${paragraph.map(renderInline).join('<br>')}</p>`)
   }
 
-  return output.join('\n')
+  return { html: output.join('\n'), comments }
 }

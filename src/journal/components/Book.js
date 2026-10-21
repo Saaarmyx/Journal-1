@@ -1,8 +1,21 @@
 import { createPage } from './Page.js'
 
+const STORAGE_KEY = 'journal-current-page'
+
+function getStoredPage(pages) {
+  const stored = localStorage.getItem(STORAGE_KEY)
+  if (stored) {
+    const pageNum = Number(stored)
+    const page = pages.find(p => p.number === pageNum)
+    if (page) return pageNum
+  }
+  return 0
+}
+
 export function createBook(pages) {
-  let spreadIndex = 0
-  let pageIndex = 0
+  const storedPage = getStoredPage(pages)
+  let pageIndex = storedPage
+  let spreadIndex = Math.floor(storedPage / 2)
   let activeGesture = null
   let turnTimer = null
   let settleTimer = null
@@ -77,7 +90,17 @@ export function createBook(pages) {
   function turn(amount) {
     if (mobileMode) pageIndex = Math.max(0, Math.min(pages.length - 1, pageIndex + amount))
     else spreadIndex = Math.max(0, Math.min(maxSpread, spreadIndex + amount))
+    savePosition()
     render()
+  }
+
+  function savePosition() {
+    const currentPage = mobileMode
+      ? pages[pageIndex]
+      : pages[spreadIndex * 2]
+    if (currentPage) {
+      localStorage.setItem(STORAGE_KEY, String(currentPage.number))
+    }
   }
 
   function settleGesture(page) {

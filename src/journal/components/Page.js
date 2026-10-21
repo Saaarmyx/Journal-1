@@ -1,8 +1,13 @@
 const escapeText = (text = '') =>
   text.replace(
     /[&<>"']/g,
-    (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char],
+    (char) => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": '\'' })[char],
   )
+
+function renderComments(comments) {
+  if (!comments || comments.length === 0) return ''
+  return comments.map(c => `<div class="comment-block">${escapeText(c)}</div>`).join('')
+}
 
 export function createPage(page, side, nextPage = null) {
   const article = document.createElement('article')
@@ -11,14 +16,14 @@ export function createPage(page, side, nextPage = null) {
     'aria-label',
     page.kind === 'missing'
       ? `Hoja arrancada ${page.number}`
-      : `${page.title}, página ${page.number}`,
+      : `${page.title}, p&#225;gina ${page.number}`,
   )
 
   if (page.kind === 'missing') {
     if (!nextPage) article.classList.add('page--missing-end')
     article.innerHTML = `
       ${nextPage ? `<div class="under-sheet" aria-hidden="true">${createPage(nextPage, side).innerHTML}</div>` : ''}
-      <div class="torn-remnant" aria-hidden="true"><span class="torn-label">Página rota</span></div>
+      <div class="torn-remnant" aria-hidden="true"><span class="torn-label">P&#225;gina rota</span></div>
     `
     return article
   }
@@ -48,9 +53,26 @@ export function createPage(page, side, nextPage = null) {
   const invisibleHasSideImage =
     page.invisible?.html.includes('polaroid--left') ||
     page.invisible?.html.includes('polaroid--right')
+  const hasComments = page.comments && page.comments.length > 0
+  const invisibleHasComments = page.invisible?.comments && page.invisible.comments.length > 0
+
+  const commentsMarkup = hasComments
+    ? `
+    <button class="comments-toggle" type="button" aria-pressed="false" aria-label="Activar luz roja para revelar comentarios" title="Luz roja">&#9670;</button>
+    <div class="comments-ink" aria-hidden="true">
+      <div class="comments-content">
+        <header class="page-heading">
+          <h2>${escapeText('Comentarios')}</h2>
+        </header>
+        <div class="page-body comments-body${hasSideImage ? '' : ' page-body--spread'}">${renderComments(page.comments)}</div>
+      </div>
+    </div>
+  `
+    : ''
+
   const invisibleMarkup = page.invisible
     ? `
-    <button class="invisible-toggle" type="button" aria-pressed="false" aria-label="Activar luz azul para revelar tinta invisible" title="Luz azul">✦</button>
+    <button class="invisible-toggle" type="button" aria-pressed="false" aria-label="Activar luz azul para revelar tinta invisible" title="Luz azul">&#9830;</button>
     <div class="invisible-ink" aria-hidden="true">
       <div class="invisible-content">
         <header class="page-heading">
@@ -61,8 +83,9 @@ export function createPage(page, side, nextPage = null) {
     </div>
   `
     : ''
+
   article.innerHTML = `
-    <div class="page-paper${page.invisible ? ' page-paper--has-invisible' : ''}">
+    <div class="page-paper${page.invisible ? ' page-paper--has-invisible' : ''}${hasComments ? ' page-paper--has-comments' : ''}">
       <div class="page-content">
         <header class="page-heading">
           <h2>${escapeText(page.title)}</h2>
@@ -70,12 +93,39 @@ export function createPage(page, side, nextPage = null) {
         <div class="page-body${isOwner ? ' page-body--owner' : hasSideImage ? '' : ' page-body--spread'}">${page.html}</div>
       </div>
       <span class="page-folio">${String(page.number).padStart(2, '0')}</span>
+      ${commentsMarkup}
       ${invisibleMarkup}
     </div>
   `
 
-  const toggle = article.querySelector('.invisible-toggle')
   const paper = article.querySelector('.page-paper')
+  
+  // Comments toggle (red light)
+  const commentsToggle = article.querySelector('.comments-toggle')
+  const commentsInk = article.querySelector('.comments-ink')
+  if (commentsToggle && paper && commentsInk) {
+    commentsToggle.addEventListener('click', () => {
+      const isActive = paper.classList.toggle('page-paper--ir-active')
+      commentsToggle.setAttribute('aria-pressed', String(isActive))
+      commentsToggle.setAttribute(
+        'aria-label',
+        isActive ? 'Apagar luz roja' : 'Activar luz roja para revelar comentarios',
+      )
+      commentsInk.setAttribute('aria-hidden', String(!isActive))
+    })
+    const moveLight = (event) => {
+      if (window.matchMedia('(max-width: 700px)').matches) return
+      if (!paper.classList.contains('page-paper--ir-active')) return
+      const bounds = paper.getBoundingClientRect()
+      paper.style.setProperty('--ir-x', `${event.clientX - bounds.left}px`)
+      paper.style.setProperty('--ir-y', `${event.clientY - bounds.top}px`)
+    }
+    paper.addEventListener('pointermove', moveLight)
+    paper.addEventListener('pointerdown', moveLight)
+  }
+
+  // Invisible ink toggle (blue light)
+  const toggle = article.querySelector('.invisible-toggle')
   const ink = article.querySelector('.invisible-ink')
   if (toggle && paper && ink) {
     toggle.addEventListener('click', () => {
