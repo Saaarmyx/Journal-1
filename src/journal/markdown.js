@@ -32,6 +32,10 @@ function renderInline(source) {
 
   text = escapeHtml(text)
     .replace(/~~(.+?)~~/g, '<del class="journal-strikethrough">$1</del>')
+    .replace(/\+\+(.+?)\+\+/g, '<u>$1</u>')
+    .replace(/==(.+?)==/g, '<mark>$1</mark>')
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/___(.+?)___/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/__(.+?)__/g, '<strong>$1</strong>')
     .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>')

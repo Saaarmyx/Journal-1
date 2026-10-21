@@ -3,7 +3,6 @@
   font-size: 12px;
   color: #28221e;
   background: #171513;
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   --ink: #44251b;
   --paper: #ead7ae;
@@ -255,6 +254,24 @@ button:focus-visible {
 .page-body a {
   color: var(--rust);
   text-underline-offset: 3px;
+}
+.page-body strong {
+  color: #3b1c13;
+  font-weight: 700;
+  -webkit-text-stroke: 0.25px currentColor;
+}
+.page-body em {
+  font-style: italic;
+}
+.page-body u {
+  text-decoration-color: #9b392c;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+.page-body mark {
+  padding: 0 0.12em;
+  background: #d5ae5d88;
+  color: inherit;
 }
 .journal-strikethrough {
   text-decoration-line: line-through;

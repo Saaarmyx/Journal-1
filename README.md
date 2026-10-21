@@ -70,7 +70,13 @@ date: 21 de octubre de 2026
 Escribe aquí el contenido de la página.
 ```
 
-El Markdown admite títulos de nivel 1 a 3, párrafos, citas, listas, código, enlaces y texto tachado con `~~así~~`. Los comentarios HTML se conservan como comentarios revelables:
+El Markdown admite títulos de nivel 1 a 3, párrafos, citas, listas, código, enlaces e imágenes. Para dar formato al texto puedes usar negrita (`**texto**`), cursiva (`*texto*`), ambas (`***texto***`), tachado (`~~texto~~`), subrayado (`++texto++`), resaltado (`==texto==`) y código en línea (`` `código` ``):
+
+```md
+**Importante**, *una nota*, ***ambos estilos***, ~~tachado~~, ++subrayado++, ==resaltado== y `x + 1`.
+```
+
+Los comentarios HTML se ocultan del texto y pueden revelarse con la luz roja:
 
 ```md
 <!-- revisar este paso después -->
