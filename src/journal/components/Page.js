@@ -1,12 +1,9 @@
 const escapeText = (text = '') =>
-  text.replace(
-    /[&<>"']/g,
-    (char) => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": '\'' })[char],
-  )
+  text.replace(/[&<>"']/g, (char) => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": "'" })[char])
 
 function renderComments(comments) {
   if (!comments || comments.length === 0) return ''
-  return comments.map(c => `<div class="comment-block">${escapeText(c)}</div>`).join('')
+  return comments.map((c) => `<div class="comment-block">${escapeText(c)}</div>`).join('')
 }
 
 export function createPage(page, side, nextPage = null) {
@@ -30,7 +27,7 @@ export function createPage(page, side, nextPage = null) {
 
   if (page.kind === 'cover') {
     article.innerHTML = `
-      <img class="cover-image" src="/portada.jpg" alt="Portada ilustrada del diario" fetchpriority="high">
+      <img class="cover-image" src="/portada.png" alt="Portada ilustrada del diario" fetchpriority="high">
     `
     return article
   }
@@ -99,7 +96,7 @@ export function createPage(page, side, nextPage = null) {
   `
 
   const paper = article.querySelector('.page-paper')
-  
+
   // Comments toggle (red light)
   const commentsToggle = article.querySelector('.comments-toggle')
   const commentsInk = article.querySelector('.comments-ink')
