@@ -307,8 +307,8 @@ button:focus-visible {
   position: absolute;
   z-index: 5;
   display: grid;
-  width: 112px;
-  height: 88px;
+  width: 132px;
+  height: 74px;
   place-items: center;
   padding: 0;
   border: 0;
