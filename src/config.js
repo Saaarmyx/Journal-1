@@ -12,7 +12,7 @@ export const journalConfig = {
       volumes: [
         {
           id: '01',
-          title: 'Matemáticas y apuntes',
+          title: 'Journal 1',
           contentDirectory: 'pages',
           cover: '/portada.png',
           coverAlt: 'Portada ilustrada del diario',
