@@ -307,8 +307,8 @@ button:focus-visible {
   position: absolute;
   z-index: 5;
   display: grid;
-  width: 72px;
-  height: 60px;
+  width: 112px;
+  height: 88px;
   place-items: center;
   padding: 0;
   border: 0;
@@ -355,26 +355,21 @@ button:focus-visible {
   position: absolute;
   z-index: 2;
   top: var(--uv-y, 50%);
-  left: var(--uv-x, 50%);
-  width: var(--uv-size, clamp(180px, 22vw, 300px));
-  height: var(--uv-size, clamp(180px, 22vw, 300px));
-  transform: translate(-50%, -50%);
+  left: 0;
+  width: 100%;
+  height: var(--uv-height, min(28vh, 260px));
+  transform: translateY(-50%);
   content: '';
   pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    #70d9ff88 0%,
-    #42baf254 62%,
+  background: linear-gradient(
+    to bottom,
+    #70d9ff12 0%,
+    #70d9ff82 24%,
+    #42baf25c 64%,
     #248fe51c 100%
   );
-  -webkit-mask-image:
-    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
   mix-blend-mode: screen;
 }
 .page-paper--uv-active .page-body {
@@ -395,20 +390,14 @@ button:focus-visible {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  -webkit-mask-size: var(--uv-size) var(--uv-size);
-  -webkit-mask-position: var(--uv-left) var(--uv-top);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  -webkit-mask-size: 100% var(--uv-height);
+  -webkit-mask-position: 0 var(--uv-top);
   -webkit-mask-repeat: no-repeat;
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
-  mask-size: var(--uv-size) var(--uv-size);
-  mask-position: var(--uv-left) var(--uv-top);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-size: 100% var(--uv-height);
+  mask-position: 0 var(--uv-top);
   mask-repeat: no-repeat;
-  mask-composite: intersect;
 }
 .invisible-content {
   display: flex;

@@ -87,30 +87,36 @@ export function createBook(initialPages) {
 
   let blueLightPointerId = null
   let blueLightStart = null
+  let flashlightOffset = { x: 0, y: 0 }
+  let blueLightOn = false
+  let lightWasOnAtDragStart = false
+  let pointerMoved = false
 
   function visiblePages() {
     return [...spread.children].filter((child) => child.classList.contains('page'))
   }
 
   function positionBlueLight(clientX, clientY, active = true) {
-    const size = mobileMode
-      ? Math.min(200, Math.max(140, window.innerWidth * 0.42))
-      : Math.min(300, Math.max(180, window.innerWidth * 0.22), Math.max(130, window.innerHeight * 0.18))
-
+    let anyPageLit = false
     visiblePages().forEach((page) => {
-      setInvisibleLight(page, active)
       const surface = page.querySelector('.page-paper') || page
       const bounds = surface.getBoundingClientRect()
-      const x = clientX - bounds.left
       const y = clientY - bounds.top
+      const isLit = active && clientX >= bounds.left && clientX <= bounds.right &&
+        clientY >= bounds.top && clientY <= bounds.bottom
+      setInvisibleLight(page, isLit)
+      if (isLit) anyPageLit = true
+      if (!isLit) return
+
+      const height = Math.min(260, Math.max(120, bounds.height * 0.28))
       for (const element of [page, surface]) {
-        element.style.setProperty('--uv-x', `${x}px`)
         element.style.setProperty('--uv-y', `${y}px`)
-        element.style.setProperty('--uv-size', `${size}px`)
-        element.style.setProperty('--uv-left', `${x - size / 2}px`)
-        element.style.setProperty('--uv-top', `${y - size / 2}px`)
+        element.style.setProperty('--uv-height', `${height}px`)
+        element.style.setProperty('--uv-top', `${y - height / 2}px`)
       }
     })
+    blueLightOn = anyPageLit
+    flashlight.setAttribute('aria-pressed', String(blueLightOn))
   }
 
   function clearBlueLight() {
@@ -118,13 +124,13 @@ export function createBook(initialPages) {
       setInvisibleLight(page, false)
       const surface = page.querySelector('.page-paper') || page
       for (const element of [page, surface]) {
-        for (const property of ['--uv-x', '--uv-y', '--uv-size', '--uv-left', '--uv-top']) {
+        for (const property of ['--uv-y', '--uv-height', '--uv-top']) {
           element.style.removeProperty(property)
         }
       }
     })
+    blueLightOn = false
     flashlight.setAttribute('aria-pressed', 'false')
-    flashlight.style.transform = ''
   }
 
   function followingPage(number) {
@@ -310,33 +316,45 @@ export function createBook(initialPages) {
     if (event.button !== 0) return
     event.preventDefault()
     blueLightPointerId = event.pointerId
-    blueLightStart = { x: event.clientX, y: event.clientY }
+    blueLightStart = {
+      x: event.clientX,
+      y: event.clientY,
+      offsetX: flashlightOffset.x,
+      offsetY: flashlightOffset.y,
+    }
+    lightWasOnAtDragStart = blueLightOn
+    pointerMoved = false
     flashlight.setPointerCapture(event.pointerId)
-    flashlight.setAttribute('aria-pressed', 'true')
     positionBlueLight(event.clientX, event.clientY)
   })
   flashlight.addEventListener('pointermove', (event) => {
     if (event.pointerId !== blueLightPointerId) return
-    flashlight.style.transform = `translate(${event.clientX - blueLightStart.x}px, ${event.clientY - blueLightStart.y}px)`
+    const deltaX = event.clientX - blueLightStart.x
+    const deltaY = event.clientY - blueLightStart.y
+    if (Math.hypot(deltaX, deltaY) > 6) pointerMoved = true
+    flashlightOffset = {
+      x: blueLightStart.offsetX + deltaX,
+      y: blueLightStart.offsetY + deltaY,
+    }
+    flashlight.style.transform = `translate(${flashlightOffset.x}px, ${flashlightOffset.y}px)`
     positionBlueLight(event.clientX, event.clientY)
   })
   const releaseFlashlight = (event) => {
     if (event.pointerId !== blueLightPointerId) return
+    if (!pointerMoved && lightWasOnAtDragStart) clearBlueLight()
     blueLightPointerId = null
     blueLightStart = null
-    clearBlueLight()
   }
   flashlight.addEventListener('pointerup', releaseFlashlight)
   flashlight.addEventListener('pointercancel', releaseFlashlight)
   flashlight.addEventListener('click', (event) => {
     if (event.detail !== 0) return
-    const active = flashlight.getAttribute('aria-pressed') !== 'true'
+    const active = !blueLightOn
     if (active) {
       const page = visiblePages()[0]
       const surface = page?.querySelector('.page-paper') || page
       const bounds = surface?.getBoundingClientRect()
       if (bounds) positionBlueLight(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2)
-      flashlight.setAttribute('aria-pressed', 'true')
     } else {
       clearBlueLight()
     }
