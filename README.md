@@ -10,7 +10,9 @@ Esta edición reúne apuntes personales de matemáticas: desde aritmética y ál
 
 ## Demostración
 
-Accediendo a este enlace: [Vista previa](https://journal-1-mu.vercel.app)
+Explora el diario interactivo en la versión publicada:
+
+[![Abrir la demostración en vivo](https://img.shields.io/badge/Abrir%20demostraci%C3%B3n-Diario%20interactivo-8b5e3c?style=for-the-badge)](https://journal-1-mu.vercel.app/)
 
 ## Características
 
