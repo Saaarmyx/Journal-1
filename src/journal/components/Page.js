@@ -159,15 +159,18 @@ export function fitPageText(root) {
     content.style.removeProperty('font-size')
     const baseSize = Number.parseFloat(getComputedStyle(content).fontSize)
     const fits = () => body.scrollHeight <= body.clientHeight + 1
+    const isMobile = window.matchMedia('(max-width: 700px)').matches
+    const minimumSize = 10
+    const maximumSize = isMobile ? 25 : 32
+    const needsDenseSpacing = !fits()
 
-    if (fits()) return
+    if (needsDenseSpacing) content.classList.add('page-content--dense')
 
-    content.classList.add('page-content--dense')
-    let low = 10
-    let high = baseSize
-    let bestFit = null
+    let low = needsDenseSpacing ? minimumSize : baseSize
+    let high = needsDenseSpacing ? baseSize : maximumSize
+    let bestFit = low
 
-    for (let attempt = 0; attempt < 9; attempt += 1) {
+    for (let attempt = 0; attempt < 12; attempt += 1) {
       const size = (low + high) / 2
       content.style.fontSize = `${size}px`
       if (fits()) {
@@ -178,6 +181,6 @@ export function fitPageText(root) {
       }
     }
 
-    content.style.fontSize = `${bestFit ?? 10}px`
+    content.style.fontSize = `${bestFit}px`
   })
 }
