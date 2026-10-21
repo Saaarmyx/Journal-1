@@ -237,14 +237,26 @@ button:focus-visible {
   background: #725f443d;
 }
 .journal-code {
-  overflow-x: auto;
-  padding: 16px;
-  background: #342d27;
-  color: #e8dfcb;
-  font: 16px/1.65 var(--mono);
+  max-width: 100%;
+  margin: 0.85em 0;
+  padding: 0.8em 1em;
+  overflow: auto;
+  border: 1px solid #ffffff20;
+  border-left: 3px solid #b85846;
+  border-radius: 6px;
+  background: #111;
+  color: #f4f1eb;
+  box-shadow: 0 4px 12px #21190f2b;
+  font: 0.78em/1.5 var(--mono);
+  tab-size: 2;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .journal-code code {
   font: inherit;
+  color: inherit;
+  white-space: inherit;
+  overflow-wrap: inherit;
 }
 .page-body code:not(pre code) {
   padding: 1px 4px;
