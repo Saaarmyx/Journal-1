@@ -12,14 +12,15 @@ function getStoredPage(pages) {
   return 0
 }
 
-export function createBook(pages) {
+export function createBook(initialPages) {
+  let pages = initialPages
   const storedPage = getStoredPage(pages)
   let pageIndex = storedPage
   let spreadIndex = Math.floor(storedPage / 2)
   let activeGesture = null
   let turnTimer = null
   let settleTimer = null
-  const maxSpread = Math.ceil(pages.length / 2) - 1
+  let maxSpread = Math.ceil(pages.length / 2) - 1
   const mobileQuery = window.matchMedia('(max-width: 700px)')
   let mobileMode = mobileQuery.matches
   const book = document.createElement('section')
@@ -91,6 +92,27 @@ export function createBook(pages) {
     if (mobileMode) pageIndex = Math.max(0, Math.min(pages.length - 1, pageIndex + amount))
     else spreadIndex = Math.max(0, Math.min(maxSpread, spreadIndex + amount))
     savePosition()
+    render()
+  }
+
+  function updatePages(nextPages) {
+    const currentPage = mobileMode
+      ? pages[pageIndex]
+      : pages[spreadIndex * 2]
+    pages = nextPages
+    maxSpread = Math.ceil(pages.length / 2) - 1
+
+    const currentIndex = currentPage
+      ? pages.findIndex((page) => page.id === currentPage.id || page.number === currentPage.number)
+      : -1
+    if (currentIndex >= 0) {
+      pageIndex = currentIndex
+      spreadIndex = Math.floor(currentIndex / 2)
+    } else {
+      pageIndex = Math.min(pageIndex, pages.length - 1)
+      spreadIndex = Math.min(spreadIndex, maxSpread)
+    }
+
     render()
   }
 
@@ -188,5 +210,5 @@ export function createBook(pages) {
   book.append(spread, previous, next)
   render()
 
-  return { element: book, turn }
+  return { element: book, turn, updatePages }
 }
