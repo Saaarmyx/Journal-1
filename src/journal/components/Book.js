@@ -188,8 +188,6 @@ export function createBook(initialPages) {
       axis: null,
       startedAt: performance.now(),
     }
-    page.classList.add('page--dragging')
-    spread.setPointerCapture(event.pointerId)
   })
 
   spread.addEventListener('pointermove', (event) => {
@@ -208,8 +206,19 @@ export function createBook(initialPages) {
     if (activeGesture.axis !== 'horizontal') return
 
     event.preventDefault()
+    activeGesture.page.classList.add('page--dragging')
+    if (!spread.hasPointerCapture(event.pointerId)) {
+      spread.setPointerCapture(event.pointerId)
+    }
     activeGesture.deltaX = deltaX
     activeGesture.page.style.setProperty('--drag-x', `${deltaX}px`)
+
+    const paper = activeGesture.page.querySelector('.page-paper')
+    if (paper?.classList.contains('page-paper--uv-active')) {
+      const bounds = paper.getBoundingClientRect()
+      paper.style.setProperty('--uv-x', `${event.clientX - bounds.left}px`)
+      paper.style.setProperty('--uv-y', `${event.clientY - bounds.top}px`)
+    }
   }, { passive: false })
 
   function finishGesture(event, cancelled = false) {

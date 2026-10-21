@@ -20,7 +20,6 @@ export function createPage(page, side, nextPage = null) {
   )
 
   const moveBlueLight = (event) => {
-    if (window.matchMedia('(max-width: 700px)').matches) return
     if (!article.classList.contains('page--uv-active')) return
 
     const surface = event.target.closest('.page-paper') || article

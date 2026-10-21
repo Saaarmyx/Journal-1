@@ -857,25 +857,35 @@ button:focus-visible {
   }
   .page-paper--uv-active::before {
     background: radial-gradient(
-      ellipse 115% 105% at 50% 48%,
+      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
       #70d9ff66 0%,
-      #42baf244 62%,
-      #248fe51c 100%
+      #42baf254 56%,
+      #248fe51c 78%,
+      transparent 100%
     );
   }
   .page--cover.page--uv-active::before,
   .page--blank.page--uv-active::before,
   .page--missing-end.page--uv-active::before {
     background: radial-gradient(
-      ellipse 115% 105% at 50% 48%,
+      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
       #70d9ff66 0%,
-      #42baf244 62%,
-      #248fe51c 100%
+      #42baf254 56%,
+      #248fe51c 78%,
+      transparent 100%
     );
   }
   .page-paper--uv-active .invisible-ink {
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: radial-gradient(
+      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
+      #000 0 56%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
+      #000 0 56%,
+      transparent 100%
+    );
   }
   .invisible-ink {
     padding: 22px 16px 38px;
