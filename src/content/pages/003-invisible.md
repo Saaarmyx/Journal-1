@@ -1,11 +1,15 @@
 ---
-title: Mi solucion con fracciones
+title: Maldita sea ~~la vida~~
 ---
 
-Yo convierto 3/4 y 1/6 a doceavos, 3/4 = 9/12 y 1/6 = 2/12, por eso la resta es 7/12,
+Si ese era mi maldito orden fantasioso, pero eso no es posible ya que para entrar en cosas como fisica avanzada necesito saber ~~mucha~~ matematicas, ademas de que **Computación y Herramientas** es mejor juntas ya que programar sin git, terminal o el editor es mega complicado, tambien quimica es la que menos puede tener una ~~coneccion~~ relacion con el resto y la ui/ux se puede aplicar en paralelo con **computacion**
 
-Para simplificar 12/18 divido arriba y abajo entre 6, obtengo 2/3,
+El verdadero orden queda asi:
 
-Para 15% de 240 calculo 10% como 24 y 5% como 12, sumo ambos resultados y obtengo 36,
+1. Computación, desarrollo y herramientas (con UI/UX en paralelo)
+2. Matemáticas (álgebra lineal, cálculo, probabilidad)
+3. Física, y después cuántica
+4. Ingeniería, robótica e IA
+5. Química
 
-Yo compruebo el tamano, 15% es menos de una quinta parte y una quinta parte de 240 es 48,
+Y lo que puedo adoptar para terminar mas rapido es

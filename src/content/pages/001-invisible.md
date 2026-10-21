@@ -1,13 +1,11 @@
 ---
-title: Lo que quiero recordar
+title: Autor ???
 ---
 
-Yo no necesito terminarlo todo en una noche, necesito avanzar con constancia y volver a las ideas que aun no domino,
+Mucha gente no me conoce y tampoco tengo que ~~sera~~ ser tan relevante, solo quiero que sepan que tratare de mejorar el diario en lo que pueda, y poder ayudar a la gente que no sabe ~~nada o poco de la programacion y otras disiplinas~~ mucho sobre los temas tratados aqui
 
-Primero intento cada problema sin buscar la solucion, despues escribo el paso que me detuvo y reviso solo esa idea,
+Lo mas importantes es aprender eso seguro, aqui practicamente estoy documentando mi descenso a la locura
 
-Cuando termino, vuelvo a resolverlo sin mirar, si puedo explicar por que funciona, ya no estoy repitiendo una receta,
+Tratere de resolver parte por parte, y escribir todo lo que pueda ~~asi quizas pueda **dormir** mejor~~ para mantenerme activo
 
-Si estudio hasta muy tarde, mi atencion empeora, voy a separar el aprendizaje en sesiones y dejar los ejercicios para cuando pueda pensar bien,
-
-Para mi primer intento, 10% de 50 es 5 y 8% es 4, entonces 18% de 50 es 9,
+> Tengo que **dormir** temprano pasadas las 23:00, no logro hacerlo

@@ -1,4 +1,4 @@
-# Diario personal
+# Journal 1
 
 ![Versión](https://img.shields.io/badge/version-1.0.0-8b5e3c)
 ![Licencia](https://img.shields.io/badge/licencia-uso%20personal%20no%20comercial-8b5e3c)
@@ -59,7 +59,7 @@ Guarda los archivos en `src/content/pages/`. Usa números consecutivos con ceros
 
 Si falta un número entre dos páginas existentes, el diario muestra una hoja arrancada en ese lugar. No inventa hojas después de la última página escrita. Si solo existe una página invisible para un número, muestra una hoja en blanco con el acceso a la luz azul.
 
-Una página puede definir título y fecha en el *frontmatter*:
+Una página puede definir título y fecha en el _frontmatter_:
 
 ```md
 ---
@@ -89,13 +89,13 @@ Procura mantener cada archivo en un máximo de 60 líneas para que la página te
 Guarda las imágenes en `public/images/` y haz referencia a ellas desde Markdown. El texto entre comillas se usa como pie de foto:
 
 ```md
-![Descripción de la imagen](/images/foto.jpg "Nota al pie")
+![Descripción de la imagen](/images/foto.jpg 'Nota al pie')
 ```
 
 Para alinear la polaroid a un lado y dejar que el texto la rodee, añade `{left}` o `{right}`:
 
 ```md
-![Un apunte visual](/images/foto.jpg "Mirar este detalle") {right}
+![Un apunte visual](/images/foto.jpg 'Mirar este detalle') {right}
 ```
 
 ### Tinta invisible
@@ -136,7 +136,7 @@ vite.config.js             Configuración de Vite
 
 ## Contribuciones
 
-Es un proyecto personal. Si quieres proponer una mejora, abre un *issue* o un *pull request* con una descripción del cambio. No envíes información privada en los reportes. Las contribuciones solo se integrarán con autorización de sus autores para distribuirlas bajo las condiciones de este proyecto.
+Es un proyecto personal. Si quieres proponer una mejora, abre un _issue_ o un _pull request_ con una descripción del cambio. No envíes información privada en los reportes. Las contribuciones solo se integrarán con autorización de sus autores para distribuirlas bajo las condiciones de este proyecto.
 
 ## Créditos y licencia
 
