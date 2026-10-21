@@ -1,15 +1,13 @@
 ---
-title: #01
+title: Lo que quiero recordar
 ---
 
-Te lo juro no se ni porque mierda hago esto, la idea principal es descargar el conocimiento en algun lado y que mejor que un lugar donde nada se pierde.
+Yo no necesito terminarlo todo en una noche, necesito avanzar con constancia y volver a las ideas que aun no domino,
 
-Cierto?
+Primero intento cada problema sin buscar la solucion, despues escribo el paso que me detuvo y reviso solo esa idea,
 
-La idea es escribir, entender y practicar
+Cuando termino, vuelvo a resolverlo sin mirar, si puedo explicar por que funciona, ya no estoy repitiendo una receta,
 
-Voy a poner todo el empeño posible viendo tutoriales y tratar de hacerlo todo free.
+Si estudio hasta muy tarde, mi atencion empeora, voy a separar el aprendizaje en sesiones y dejar los ejercicios para cuando pueda pensar bien,
 
-al final voy a resolver todo nuevamente solo por seguridad
-
-No puedo dormir muy bien, me toca jugar o ver tiktok y eso es un grave problema ya que no puedo funcionar del todo bien asi
+Para mi primer intento, 10% de 50 es 5 y 8% es 4, entonces 18% de 50 es 9,

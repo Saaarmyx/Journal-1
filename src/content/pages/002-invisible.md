@@ -1,11 +1,11 @@
 ---
-title: Asi compruebo las fracciones
+title: Como relaciono las operaciones
 ---
 
-Yo empiezo con -8 + 13, que da 5, despues resto 6 y obtengo -1,
+Yo escribo cuatro grupos de siete como 7 + 7 + 7 + 7, la suma da 28, asi que 4 * 7 tambien da 28,
 
-Para 3/4 - 1/6 uso el denominador 12, entonces 3/4 = 9/12 y 1/6 = 2/12, mi respuesta es 7/12,
+Para -8 + 13 - 6 primero sumo -8 + 13 y obtengo 5, despues resto 6 y llego a -1,
 
-Para 15% de 240 calculo 10% = 24 y 5% = 12, sumo 24 + 12 y obtengo 36,
+Para repartir 24 objetos en grupos de 4 divido 24 / 4 y obtengo 6 grupos,
 
-Tambien compruebo el tamano, 15% es menos de una quinta parte, asi que 36 es razonable,
+Puedo comprobar la division multiplicando 6 * 4 y confirmando que recupero 24,

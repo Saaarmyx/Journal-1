@@ -1,11 +1,11 @@
 ---
-title: Mi escala y mis unidades
+title: Mi solucion con fracciones
 ---
 
-Yo expando 3^4 como 3 * 3 * 3 * 3, primero 3 * 3 = 9 y luego 9 * 9 = 81,
+Yo convierto 3/4 y 1/6 a doceavos, 3/4 = 9/12 y 1/6 = 2/12, por eso la resta es 7/12,
 
-Como 12 * 12 = 144, sqrt(144) = 12,
+Para simplificar 12/18 divido arriba y abajo entre 6, obtengo 2/3,
 
-Para 0,00056 muevo la coma cuatro lugares a la derecha para obtener 5,6, por eso escribo 5,6 * 10^-4,
+Para 15% de 240 calculo 10% como 24 y 5% como 12, sumo ambos resultados y obtengo 36,
 
-En el viaje multiplico 72 km/h por 2 h, las horas se cancelan y quedan 144 km,
+Yo compruebo el tamano, 15% es menos de una quinta parte y una quinta parte de 240 es 48,

@@ -1,11 +1,11 @@
 ---
-title: Mi lectura de una recta
+title: Mis pasos al simplificar
 ---
 
-Yo resto los valores de y y divido por la diferencia de x, la pendiente es (8 - 2) / (4 - 1) = 6/3 = 2,
+Yo agrupo los terminos con x y los numeros por separado, 4x - 2x = 2x y 3 + 5 = 8, la expresion queda 2x + 8,
 
-Uso y = mx + b y reemplazo el punto (1,2), queda 2 = 2 * 1 + b, entonces b = 0,
+Para (x + 3)^2 multiplico (x + 3)(x + 3), obtengo x^2 + 3x + 3x + 9,
 
-La recta es y = 2x, compruebo el otro punto, cuando x = 4 obtengo y = 8,
+Al unir los terminos semejantes queda x^2 + 6x + 9,
 
-Si una funcion tiene una restriccion, como una raiz cuadrada, yo reviso que valores de entrada hacen que la expresion dentro de la raiz sea no negativa,
+Yo compruebo con x = 1, el producto vale 16 y la expansion tambien da 1 + 6 + 9 = 16,

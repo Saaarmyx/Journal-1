@@ -1,11 +1,11 @@
 ---
-title: Como verifico el triangulo
+title: Mi solucion para ecuaciones y sistemas
 ---
 
-Yo divido el lado opuesto entre la hipotenusa, sin(t) = 3/5,
+Yo sumo 7 a ambos lados de 3x - 7 = 11, queda 3x = 18, divido entre 3 y obtengo x = 6,
 
-Despues divido el lado adyacente entre la hipotenusa, cos(t) = 4/5,
+Para el sistema sumo las ecuaciones, 3x = 6 y x = 2, sustituyo en x + y = 5 y encuentro y = 3,
 
-Al comprobar la identidad obtengo (3/5)^2 + (4/5)^2 = 9/25 + 16/25 = 1,
+Compruebo la segunda ecuacion, 2 * 2 - 3 = 1, las dos igualdades se cumplen,
 
-Si dibujo una senal periodica, yo identifico amplitud, periodo y desplazamiento antes de ajustar la formula,
+Si tengo una desigualdad como -2x < 6, al dividir por -2 invierto el signo y obtengo x > -3,

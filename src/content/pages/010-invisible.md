@@ -1,11 +1,11 @@
 ---
-title: Mi dibujo de la region
+title: Mi comprobacion trigonometrica
 ---
 
-Yo dibujo primero el rectangulo, su ancho es 2 y su alto es 3,
+Yo leo 2^3 = 8 como log base 2 de 8 = 3, el logaritmo pregunta a que exponente elevo 2 para obtener 8,
 
-Como la funcion vale 1 en todos los puntos, sumar sus valores sobre la region equivale a calcular el area,
+En el triangulo, el seno es 3/5 y el coseno es 4/5,
 
-El area es 2 * 3 = 6, por eso la integral doble tambien vale 6,
+Calculo (3/5)^2 + (4/5)^2 = 9/25 + 16/25 = 1,
 
-Para un problema de optimizacion con restricciones, yo reviso puntos criticos y extremos de la frontera, no solo una derivada interior,
+El resultado confirma la identidad, si modelo una senal periodica tambien registro amplitud, periodo y desplazamiento,

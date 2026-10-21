@@ -1,11 +1,11 @@
 ---
-title: Como hago eliminacion de Gauss
+title: Mi calculo del limite
 ---
 
-Yo escribo las filas (1,1,5) y (2,-1,1), resto dos veces la primera fila a la segunda y obtengo (0,-3,-9),
+Yo sustituyo 2 arriba y abajo y obtengo 0/0, eso me indica que debo simplificar, no que el limite no exista,
 
-La segunda fila dice -3y = -9, entonces y = 3, sustituyo en x + y = 5 y obtengo x = 2,
+Yo factorizo x^2 - 4 como (x - 2)(x + 2), cancelo el factor comun para los valores cercanos a 2 y queda x + 2,
 
-Compruebo la segunda ecuacion, 2 * 2 - 3 = 1, ambas ecuaciones se cumplen,
+Al acercarme a 2 obtengo 4,
 
-Si una matriz cambia las dimensiones o el orden de sus filas, yo reviso que esas operaciones sigan representando el sistema original,
+Aunque la fraccion original no esta definida exactamente en 2, los valores vecinos se acercan a 4,

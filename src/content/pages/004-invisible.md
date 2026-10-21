@@ -1,11 +1,11 @@
 ---
-title: Mis pasos para despejar
+title: Mi comprobacion de potencias y unidades
 ---
 
-En 3x - 7 = 11 sumo 7 a ambos lados, queda 3x = 18, divido entre 3 y obtengo x = 6,
+Yo agrupo 3^4 como 3 * 3 y 3 * 3, obtengo 9 * 9 = 81,
 
-En el sistema sumo las ecuaciones, 3x = 6, entonces x = 2, sustituyo en x + y = 5 y obtengo y = 3,
+Como 12 * 12 = 144, sqrt(144) = 12,
 
-Reconozco x^2 - 9 como diferencia de cuadrados, porque 9 = 3^2, por eso x^2 - 9 = (x - 3)(x + 3),
+Muevo la coma de 0,00056 cuatro lugares a la derecha para obtener 5,6, entonces escribo 5,6 * 10^-4,
 
-Yo multiplico los factores otra vez para revisar que recupero la expresion inicial,
+Multiplico 72 km/h por 2 h, las horas se cancelan y la distancia es 144 km,

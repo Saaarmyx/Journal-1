@@ -1,11 +1,11 @@
 ---
-title: Mi interpretacion del cambio
+title: Como verifico una factorizacion
 ---
 
-Yo derivo cada termino, la derivada de x^2 es 2x y la de 3x es 3, por eso la derivada de f es 2x + 3,
+Yo reconozco x^2 - 9 como x^2 - 3^2, entonces uso la diferencia de cuadrados y obtengo (x - 3)(x + 3),
 
-En x = 2 obtengo 4 + 3 = 7, la pendiente de la tangente en ese punto es 7,
+Para x^2 + 5x + 6 busco dos numeros cuyo producto sea 6 y cuya suma sea 5, encuentro 2 y 3,
 
-En el limite no puedo sustituir primero porque aparece 0/0, factorizo x^2 - 4 como (x - 2)(x + 2), cancelo el factor comun y el limite vale 4,
+La factorizacion es (x + 2)(x + 3), al multiplicar recupero x^2 + 5x + 6,
 
-Yo reviso que el factor cancelado no cambie la expresion cerca del punto,
+Si no recupero el polinomio original, reviso signos y productos cruzados,

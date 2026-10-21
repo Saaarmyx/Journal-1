@@ -1,11 +1,11 @@
 ---
-title: Mi calculo del gradiente
+title: Mis respuestas sobre funciones
 ---
 
-Yo cambio x y mantengo y fija, la derivada parcial respecto a x es 2x,
+Yo reemplazo x por 3 y calculo f(3) = 2 * 3 + 1 = 7,
 
-Luego cambio y y mantengo x fija, la derivada parcial respecto a y es 6y,
+Para invertir y = 2x + 1, despejo x, resto 1 y divido entre 2, la inversa es f inversa de x = (x - 1) / 2,
 
-El gradiente es (2x,6y), en (1,2) queda (2,12),
+Para g(x) = sqrt(x - 2), lo que esta bajo la raiz debe ser mayor o igual que cero, entonces x debe ser mayor o igual que 2,
 
-Para el vector (3,4) calculo sqrt(9 + 16) = sqrt(25) = 5, asi verifico que conozco su longitud,
+Compruebo la inversa aplicando primero la funcion y despues la regla inversa,
