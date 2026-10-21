@@ -864,20 +864,23 @@ button:focus-visible {
     right: 3px;
   }
   .polaroid {
-    max-width: 95%;
-    margin: 20px auto;
+    width: min(72%, 300px);
+    max-width: 78%;
+    margin: 12px auto 18px;
     padding: 7px 7px 10px;
   }
-  .polaroid--left {
-    max-width: 44%;
-    margin: 8px 14px 12px 0;
-  }
+  .polaroid--left,
   .polaroid--right {
-    max-width: 44%;
-    margin: 8px 0 12px 14px;
+    float: none;
+    width: min(72%, 300px);
+    max-width: 78%;
+    margin: 12px auto 18px;
+    transform: rotate(-0.6deg);
   }
   .polaroid img {
-    max-height: 32vh;
+    height: min(12dvh, 120px);
+    max-height: none;
+    object-fit: contain;
   }
   .polaroid figcaption {
     font-size: 14px;
