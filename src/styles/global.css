@@ -360,11 +360,11 @@ button:focus-visible {
   height: var(--uv-height, min(38vh, 300px));
   content: '';
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
+  background: radial-gradient(
+    ellipse 115% 125% at 50% 0%,
     #70d9ff8c 0%,
-    #70d9ff65 24%,
-    #42baf242 62%,
+    #42baf254 44%,
+    #248fe51c 78%,
     #248fe500 100%
   );
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
