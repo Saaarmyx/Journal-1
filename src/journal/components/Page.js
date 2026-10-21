@@ -182,7 +182,14 @@ export function fitPageText(root) {
     }
 
     content.style.fontSize = `${baseSize}px`
-    setImageHeight(0)
+    setImageHeight(preferredImageHeight)
+
+    let imageHeight = preferredImageHeight
+    const minimumImageHeight = isMobile ? 32 : 48
+    while (images.length && !fits() && imageHeight > minimumImageHeight) {
+      imageHeight = Math.max(minimumImageHeight, imageHeight - 4)
+      setImageHeight(imageHeight)
+    }
 
     if (!fits()) {
       content.classList.add('page-content--dense')
@@ -206,19 +213,12 @@ export function fitPageText(root) {
       }
     }
 
-    let imageHeight = 0
-    if (images.length) {
-      const availableImageSpace = Math.max(0, body.clientHeight - body.scrollHeight)
-      imageHeight = Math.min(preferredImageHeight, Math.max(0, availableImageSpace - images.length * 4) / images.length)
+    while (images.length && !fits() && imageHeight > 0) {
+      imageHeight = Math.max(0, imageHeight - 4)
       setImageHeight(imageHeight)
-
-      while (!fits() && imageHeight > 0) {
-        imageHeight = Math.max(0, imageHeight - 2)
-        setImageHeight(imageHeight)
-      }
     }
 
-    if (!images.length || imageHeight >= preferredImageHeight - 1) {
+    if (fits()) {
       let low = Number.parseFloat(content.style.fontSize)
       let high = maximumSize
       let bestFit = low
