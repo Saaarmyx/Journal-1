@@ -367,8 +367,8 @@ button:focus-visible {
     #248fe51c 78%,
     #248fe500 100%
   );
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 58%, transparent 100%);
   mix-blend-mode: screen;
 }
 .page-paper--uv-active .page-body {
@@ -389,11 +389,11 @@ button:focus-visible {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 58%, transparent 100%);
   -webkit-mask-size: 100% var(--uv-height);
   -webkit-mask-position: 0 var(--uv-top);
   -webkit-mask-repeat: no-repeat;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 58%, transparent 100%);
   mask-size: 100% var(--uv-height);
   mask-position: 0 var(--uv-top);
   mask-repeat: no-repeat;
