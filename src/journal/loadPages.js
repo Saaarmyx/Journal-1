@@ -8,7 +8,7 @@ const markdownFiles = import.meta.glob('../content/**/*.md', {
 
 function readPage(path, raw) {
   const filename = path.split('/').pop()
-  if (/^final-before(?:-wait)?\.md$/i.test(filename)) {
+  if (/^final-before\.md$/i.test(filename)) {
     const { meta, body } = parseFrontmatter(raw)
     const { html, comments } = renderMarkdown(body)
     const plainImagesHtml = html.replace(
