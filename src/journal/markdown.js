@@ -17,9 +17,10 @@ export function renderInline(source) {
   const hold = (html) => `\u0000${chunks.push(html) - 1}\u0000`
 
   let text = source
-    .replace(/!\[([^\]]*)\]\(([^\s)]+)(?:\s+"([^"]*)")?\)(?:\s+\{(left|right)\})?/g, (_match, alt, url, caption = '', side = '') => {
+    .replace(/!\[([^\]]*)\]\(([^\s)]+)(?:\s+(?:"([^"]*)"|'([^']*)'|\(([^)]*)\)))?\)(?:\s+\{(left|right)\})?/g, (_match, alt, url, doubleCaption = '', singleCaption = '', wrappedCaption = '', side = '') => {
       const imageUrl = safeUrl(url, true)
       if (!imageUrl) return escapeHtml(alt)
+      const caption = doubleCaption || singleCaption || wrappedCaption || ''
       const sideClass = side ? ` polaroid--${side}` : ''
       return hold(`<figure class="polaroid${sideClass}"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(alt)}" loading="lazy"><figcaption>${escapeHtml(caption || alt)}</figcaption></figure>`)
     })
@@ -101,7 +102,7 @@ export function renderMarkdown(markdown) {
       continue
     }
 
-    if (/^\s*!\[([^\]]*)\]\(([^\s)]+)(?:\s+"([^"]*)")?\)(?:\s+\{(?:left|right)\})?\s*$/.test(line)) {
+    if (/^\s*!\[([^\]]*)\]\(([^\s)]+)(?:\s+(?:"([^"]*)"|'([^']*)'|\(([^)]*)\)))?\)(?:\s+\{(?:left|right)\})?\s*$/.test(line)) {
       output.push(renderInline(line.trim()))
       index += 1
       continue
