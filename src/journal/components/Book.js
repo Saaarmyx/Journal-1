@@ -2,8 +2,8 @@ import { createPage, fitPageText, setCommentsLight, setInvisibleLight } from './
 
 const STORAGE_KEY = 'journal-current-page'
 
-function getStoredPage(pages) {
-  const stored = localStorage.getItem(STORAGE_KEY)
+function getStoredPage(pages, storageKey = STORAGE_KEY) {
+  const stored = localStorage.getItem(storageKey)
   if (stored) {
     const pageNum = Number(stored)
     const page = pages.find(p => p.number === pageNum)
@@ -12,9 +12,9 @@ function getStoredPage(pages) {
   return 0
 }
 
-export function createBook(initialPages) {
+export function createBook(initialPages, storageKey = STORAGE_KEY) {
   let pages = initialPages
-  const storedPage = getStoredPage(pages)
+  const storedPage = getStoredPage(pages, storageKey)
   let pageIndex = storedPage
   let spreadIndex = Math.floor(storedPage / 2)
   let activeGesture = null
@@ -221,7 +221,7 @@ export function createBook(initialPages) {
       ? pages[pageIndex]
       : pages[spreadIndex * 2]
     if (currentPage) {
-      localStorage.setItem(STORAGE_KEY, String(currentPage.number))
+      localStorage.setItem(storageKey, String(currentPage.number))
     }
   }
 

@@ -29,8 +29,10 @@ export function createPage(page, side, nextPage = null) {
   }
 
   if (page.kind === 'cover') {
+    const coverSrc = escapeText(page.coverSrc || '/portada.png')
+    const coverAlt = escapeText(page.coverAlt || 'Portada ilustrada del diario')
     article.innerHTML = `
-      <img class="cover-image" src="/portada.png" alt="Portada ilustrada del diario" fetchpriority="high">
+      <img class="cover-image" src="${coverSrc}" alt="${coverAlt}" fetchpriority="high">
     `
     return article
   }

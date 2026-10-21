@@ -1,6 +1,6 @@
 import { parseFrontmatter, renderMarkdown } from './markdown.js'
 
-const markdownFiles = import.meta.glob('../content/pages/*.md', {
+const markdownFiles = import.meta.glob('../content/**/*.md', {
   eager: true,
   query: '?raw',
   import: 'default',
@@ -8,7 +8,7 @@ const markdownFiles = import.meta.glob('../content/pages/*.md', {
 
 function readPage(path, raw) {
   const filename = path.split('/').pop()
-  if (filename.toLowerCase() === 'final-before.md') {
+  if (/^final-before(?:-wait)?\.md$/i.test(filename)) {
     const { meta, body } = parseFrontmatter(raw)
     const { html, comments } = renderMarkdown(body)
     const plainImagesHtml = html.replace(
@@ -54,8 +54,11 @@ function readPage(path, raw) {
   }
 }
 
-export function loadPages() {
+export function loadPages(volume = { contentDirectory: 'pages', cover: '/portada.png' }) {
+  const contentDirectory = volume.contentDirectory.replace(/^\/+|\/+$/g, '')
+  const contentPrefix = `../content/${contentDirectory}/`
   const found = Object.entries(markdownFiles)
+    .filter(([path]) => path.startsWith(contentPrefix))
     .map(([path, raw]) => readPage(path, raw))
     .filter(Boolean)
     .filter((page) => page.isInvisible || page.isFinalBefore || page.kind === 'cover' || page.title)
@@ -77,7 +80,10 @@ export function loadPages() {
     const page = pagesByNumber.get(number)
     if (page) {
       const invisible = invisibleByNumber.get(number)
-      return invisible ? { ...page, invisible: { title: invisible.title, html: invisible.html, comments: invisible.comments } } : page
+      const withCover = page.kind === 'cover'
+        ? { ...page, coverSrc: volume.cover || '/portada.png', coverAlt: volume.coverAlt || 'Portada ilustrada del diario' }
+        : page
+      return invisible ? { ...withCover, invisible: { title: invisible.title, html: invisible.html, comments: invisible.comments } } : withCover
     }
     const invisible = invisibleByNumber.get(number)
     if (invisible) {

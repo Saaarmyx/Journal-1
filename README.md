@@ -1,12 +1,12 @@
-# Journal 1
+# Journal Template
 
 ![Versión](https://img.shields.io/badge/version-1.0.0-8b5e3c)
-![Licencia](https://img.shields.io/badge/licencia-uso%20personal%20no%20comercial-8b5e3c)
-![Estado](https://img.shields.io/badge/estado-proyecto%20personal-6b705c)
+![Licencia](https://img.shields.io/badge/license-Apache--2.0-8b5e3c)
+![Estado](https://img.shields.io/badge/status-template-6b705c)
 
-Un diario digital que convierte archivos Markdown en un libro interactivo. Cada página se escribe y mantiene por separado, así que puedes añadir, editar o quitar contenido sin modificar los componentes de la aplicación.
+Una plantilla modular para crear diarios digitales personales a partir de archivos Markdown. Configura varios diarios y tomos, escribe cada página por separado y publica cada copia con la identidad y el contenido de su autor.
 
-Esta edición reúne apuntes personales de matemáticas: desde aritmética y álgebra hasta cálculo, estadística y métodos numéricos.
+La demo enlazada es la edición personal de Saaarmyx. El código de la plantilla puede reutilizarse para crear diarios propios.
 
 ## Demostración
 
@@ -17,6 +17,8 @@ Explora el diario interactivo en la versión publicada:
 ## Características
 
 - Libro a doble página en escritorio, con navegación táctil y deslizamiento en móviles.
+- Varios diarios y tomos seleccionables desde la interfaz.
+- Configuración por diario para autor, título, descripción, portada y tomos.
 - Portada, página de propiedad y cierre definidos mediante Markdown.
 - Páginas numeradas que aparecen automáticamente al añadir archivos; los números ausentes entre páginas escritas se muestran como hojas arrancadas.
 - Notas de tinta invisible en archivos `-invisible.md`, reveladas con la luz azul sobre la misma hoja.
@@ -48,12 +50,48 @@ npm install
 npm run dev
 ```
 
-Abre la URL que imprime Vite. Para generar y previsualizar la versión de producción:
+Abre la URL local que imprime Vite. Para generar y previsualizar la versión de producción:
 
 ```bash
 npm run build
 npm run preview
 ```
+
+## Crear tu diario y añadir tomos
+
+Edita `src/config.js` para configurar la identidad del diario y la lista de tomos. Cada diario tiene un `id`, nombre, autor, descripción, tomo inicial y uno o más tomos. El selector de diarios y tomos aparece automáticamente cuando agregas más de una opción.
+
+La edición incluida usa `src/content/pages/` como contenido del tomo 01. Para añadir otro tomo o un diario independiente, crea un directorio dentro de `src/content/journals/` y registra su ruta en `src/config.js`:
+
+```js
+{
+  id: 'mi-diario',
+  title: 'Mi diario',
+  author: 'Tu nombre',
+  description: 'Notas, observaciones y memoria.',
+  defaultVolumeId: '01',
+  volumes: [
+    {
+      id: '01',
+      title: 'Tomo 1',
+      contentDirectory: 'journals/mi-diario/01',
+      cover: '/journals/mi-diario/01/portada.jpg',
+      coverAlt: 'Portada de Mi diario',
+    },
+    {
+      id: '02',
+      title: 'Tomo 2',
+      contentDirectory: 'journals/mi-diario/02',
+      cover: '/journals/mi-diario/02/portada.jpg',
+      coverAlt: 'Portada del tomo 2',
+    },
+  ],
+}
+```
+
+Guarda las páginas como `src/content/journals/mi-diario/01/000.md`, `001.md`, etc. Pon las imágenes de portada en `public/journals/mi-diario/01/` y referencia imágenes de página desde `public/` con rutas como `/journals/mi-diario/01/foto.jpg`. Para separar diarios de distintos autores, añade otra entrada al arreglo `journals` de `src/config.js` con su propio `id` y sus tomos.
+
+La URL acepta `?journal=mi-diario&volume=02`; los selectores actualizan estos valores al cambiar de diario o tomo. Así cada tomo conserva su propia página de lectura.
 
 ## Escribir páginas
 
@@ -112,7 +150,7 @@ title: Una explicación extra
 Este texto se revela con la luz azul.
 ```
 
-La nota aparece sobre la misma página, no en una ventana aparte. En escritorio la luz sigue el puntero; en móvil se activa directamente con el botón.
+La nota aparece sobre la misma página, no en una ventana aparte. Arrastra la linterna UV por la página para revelar la tinta; el gesto funciona con ratón y con el dedo.
 
 ### Portada y cierre
 
@@ -125,7 +163,10 @@ La nota aparece sobre la misma página, no en una ventana aparte. En escritorio 
 ```text
 public/                    Recursos públicos, portada, imágenes y favicon
 src/
-  content/pages/           Páginas numeradas en Markdown
+  config.js                Autores, diarios, tomos y portadas
+  content/
+    pages/                 Páginas del tomo inicial de la demo
+    journals/              Contenido separado por diario y tomo
   journal/
     components/            Libro y hojas
     createJournal.js       Montaje del diario
@@ -138,10 +179,10 @@ vite.config.js             Configuración de Vite
 
 ## Contribuciones
 
-Es un proyecto personal. Si quieres proponer una mejora, abre un _issue_ o un _pull request_ con una descripción del cambio. No envíes información privada en los reportes. Las contribuciones solo se integrarán con autorización de sus autores para distribuirlas bajo las condiciones de este proyecto.
+Para proponer una mejora, abre un _issue_ o un _pull request_ con una descripción clara. No incluyas información privada ni contenido de diarios personales en los reportes. Las contribuciones de código se distribuyen bajo Apache-2.0.
 
 ## Créditos y licencia
 
-Creado por **Saaarmyx**. La licencia personalizada permite usar, copiar y modificar el proyecto para fines personales y no comerciales, exige atribución y prohíbe venderlo. Lee [LICENSE](LICENSE) antes de reutilizarlo.
+Creado por **Saaarmyx**. El código de la plantilla se distribuye bajo la licencia estándar [Apache-2.0](LICENSE), aprobada por la [Open Source Initiative](https://opensource.org/licenses). Permite usar, modificar y redistribuir el código, incluso con fines comerciales, respetando sus condiciones de atribución y redistribución.
 
-Esta condición permite consultar el código y reutilizarlo bajo esos límites, pero no es una licencia de código abierto según la definición de OSI, que no permite restringir el uso comercial. Los paquetes y recursos de terceros conservan sus propias licencias.
+La licencia no cubre las entradas personales de `src/content/` ni fotografías, portadas y otros medios de `public/`; sus autores conservan sus derechos. Consulta [NOTICE](NOTICE) y las licencias individuales de dependencias y recursos de terceros antes de reutilizarlos.
