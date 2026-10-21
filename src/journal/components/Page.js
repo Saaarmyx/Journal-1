@@ -19,17 +19,6 @@ export function createPage(page, side, nextPage = null) {
       : `${accessibleTitle ? `${accessibleTitle}, ` : ''}página ${page.number}`,
   )
 
-  const moveBlueLight = (event) => {
-    if (!article.classList.contains('page--uv-active')) return
-
-    const surface = event.target.closest('.page-paper') || article
-    const bounds = surface.getBoundingClientRect()
-    surface.style.setProperty('--uv-x', `${event.clientX - bounds.left}px`)
-    surface.style.setProperty('--uv-y', `${event.clientY - bounds.top}px`)
-  }
-  article.addEventListener('pointermove', moveBlueLight)
-  article.addEventListener('pointerdown', moveBlueLight)
-
   if (page.kind === 'missing') {
     if (!nextPage) article.classList.add('page--missing-end')
     article.innerHTML = `

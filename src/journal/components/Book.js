@@ -47,14 +47,30 @@ export function createBook(initialPages) {
   next.setAttribute('aria-label', 'Doble página siguiente')
   next.innerHTML = '<span aria-hidden="true">›</span>'
 
-  const invisibleToggle = document.createElement('button')
-  invisibleToggle.className = 'invisible-toggle invisible-toggle--global'
-  invisibleToggle.type = 'button'
-  invisibleToggle.hidden = false
-  invisibleToggle.setAttribute('aria-pressed', 'false')
-  invisibleToggle.setAttribute('aria-label', 'Activar luz azul sobre el diario')
-  invisibleToggle.title = 'Luz azul'
-  invisibleToggle.innerHTML = '&#9830;'
+  const flashlight = document.createElement('button')
+  flashlight.className = 'uv-flashlight'
+  flashlight.type = 'button'
+  flashlight.setAttribute('aria-pressed', 'false')
+  flashlight.setAttribute('aria-label', 'Arrastrar la linterna UV sobre el diario')
+  flashlight.title = 'Arrastra la linterna sobre la página'
+  flashlight.innerHTML = `
+    <svg viewBox="0 0 96 72" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="uv-beam" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fa86ff" stop-opacity=".6" />
+          <stop offset="1" stop-color="#73cfff" stop-opacity=".08" />
+        </linearGradient>
+        <linearGradient id="uv-body" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#51405e" />
+          <stop offset="1" stop-color="#19151e" />
+        </linearGradient>
+      </defs>
+      <path d="M57 39 94 68 72 25Z" fill="url(#uv-beam)" />
+      <path d="M8 10 16 2q5-5 10 0l39 39q5 5 0 10l-7 7q-5 5-10 0L9 20q-5-5-1-10Z" fill="url(#uv-body)" stroke="#100e14" stroke-width="3" />
+      <path d="m12 10 10-10 6 6-10 10Z" fill="#dd6bea" stroke="#25162a" stroke-width="2" />
+      <path d="m51 43 10-10 8 8-10 10Z" fill="#f28af8" stroke="#37213f" stroke-width="2" />
+      <path d="m55 43 6-6 5 5-6 6Z" fill="#ffe1ff" opacity=".9" />
+    </svg>`
 
   const commentsToggle = document.createElement('button')
   commentsToggle.className = 'comments-toggle comments-toggle--global'
@@ -67,20 +83,59 @@ export function createBook(initialPages) {
 
   const lightControls = document.createElement('div')
   lightControls.className = 'journal-lights'
-  lightControls.append(invisibleToggle, commentsToggle)
+  lightControls.append(flashlight, commentsToggle)
+
+  let blueLightPointerId = null
+  let blueLightStart = null
+
+  function visiblePages() {
+    return [...spread.children].filter((child) => child.classList.contains('page'))
+  }
+
+  function positionBlueLight(clientX, clientY, active = true) {
+    const size = mobileMode
+      ? Math.min(200, Math.max(140, window.innerWidth * 0.42))
+      : Math.min(300, Math.max(180, window.innerWidth * 0.22), Math.max(130, window.innerHeight * 0.18))
+
+    visiblePages().forEach((page) => {
+      setInvisibleLight(page, active)
+      const surface = page.querySelector('.page-paper') || page
+      const bounds = surface.getBoundingClientRect()
+      const x = clientX - bounds.left
+      const y = clientY - bounds.top
+      for (const element of [page, surface]) {
+        element.style.setProperty('--uv-x', `${x}px`)
+        element.style.setProperty('--uv-y', `${y}px`)
+        element.style.setProperty('--uv-size', `${size}px`)
+        element.style.setProperty('--uv-left', `${x - size / 2}px`)
+        element.style.setProperty('--uv-top', `${y - size / 2}px`)
+      }
+    })
+  }
+
+  function clearBlueLight() {
+    visiblePages().forEach((page) => {
+      setInvisibleLight(page, false)
+      const surface = page.querySelector('.page-paper') || page
+      for (const element of [page, surface]) {
+        for (const property of ['--uv-x', '--uv-y', '--uv-size', '--uv-left', '--uv-top']) {
+          element.style.removeProperty(property)
+        }
+      }
+    })
+    flashlight.setAttribute('aria-pressed', 'false')
+    flashlight.style.transform = ''
+  }
 
   function followingPage(number) {
     return pages.find((page) => page.number > number && page.kind !== 'missing') || null
   }
 
   function syncInvisibleToggle() {
-    const visiblePages = [...spread.querySelectorAll('.page')]
-    commentsToggle.hidden = !visiblePages.some((page) => page.querySelector('.comments-ink'))
+    const pagesOnSpread = visiblePages()
+    commentsToggle.hidden = !pagesOnSpread.some((page) => page.querySelector('.comments-ink'))
     commentsToggle.setAttribute('aria-pressed', 'false')
     commentsToggle.setAttribute('aria-label', 'Activar luz roja para revelar comentarios')
-    invisibleToggle.hidden = false
-    invisibleToggle.setAttribute('aria-pressed', 'false')
-    invisibleToggle.setAttribute('aria-label', 'Activar luz azul sobre el diario')
   }
 
   function render() {
@@ -251,11 +306,40 @@ export function createBook(initialPages) {
 
   previous.addEventListener('click', () => turn(-1))
   next.addEventListener('click', () => turn(1))
-  invisibleToggle.addEventListener('click', () => {
-    const isActive = invisibleToggle.getAttribute('aria-pressed') !== 'true'
-    spread.querySelectorAll('.page').forEach((page) => setInvisibleLight(page, isActive))
-    invisibleToggle.setAttribute('aria-pressed', String(isActive))
-    invisibleToggle.setAttribute('aria-label', isActive ? 'Apagar luz azul' : 'Activar luz azul sobre el diario')
+  flashlight.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0) return
+    event.preventDefault()
+    blueLightPointerId = event.pointerId
+    blueLightStart = { x: event.clientX, y: event.clientY }
+    flashlight.setPointerCapture(event.pointerId)
+    flashlight.setAttribute('aria-pressed', 'true')
+    positionBlueLight(event.clientX, event.clientY)
+  })
+  flashlight.addEventListener('pointermove', (event) => {
+    if (event.pointerId !== blueLightPointerId) return
+    flashlight.style.transform = `translate(${event.clientX - blueLightStart.x}px, ${event.clientY - blueLightStart.y}px)`
+    positionBlueLight(event.clientX, event.clientY)
+  })
+  const releaseFlashlight = (event) => {
+    if (event.pointerId !== blueLightPointerId) return
+    blueLightPointerId = null
+    blueLightStart = null
+    clearBlueLight()
+  }
+  flashlight.addEventListener('pointerup', releaseFlashlight)
+  flashlight.addEventListener('pointercancel', releaseFlashlight)
+  flashlight.addEventListener('click', (event) => {
+    if (event.detail !== 0) return
+    const active = flashlight.getAttribute('aria-pressed') !== 'true'
+    if (active) {
+      const page = visiblePages()[0]
+      const surface = page?.querySelector('.page-paper') || page
+      const bounds = surface?.getBoundingClientRect()
+      if (bounds) positionBlueLight(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2)
+      flashlight.setAttribute('aria-pressed', 'true')
+    } else {
+      clearBlueLight()
+    }
   })
   commentsToggle.addEventListener('click', () => {
     const isActive = commentsToggle.getAttribute('aria-pressed') !== 'true'

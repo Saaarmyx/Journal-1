@@ -303,29 +303,34 @@ button:focus-visible {
   font: 18px var(--mono);
   opacity: 0.72;
 }
-.invisible-toggle {
+.uv-flashlight {
   position: absolute;
   z-index: 5;
-  left: 18px;
-  top: 12px;
   display: grid;
-  width: 34px;
-  height: 34px;
+  width: 72px;
+  height: 60px;
   place-items: center;
-  border: 1px solid #755f3d66;
-  border-radius: 50%;
-  background: #f4e6c5cc;
-  color: #755f3d;
-  font-size: 21px;
-  cursor: pointer;
-  box-shadow: 0 2px 6px #3c2d1d33;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 6px #120b1766);
+  transition: filter 0.15s ease;
 }
-.invisible-toggle[hidden] {
-  display: none;
+.uv-flashlight svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
-.invisible-toggle--global {
-  position: relative;
-  inset: auto;
+.uv-flashlight:hover,
+.uv-flashlight[aria-pressed='true'] {
+  filter: drop-shadow(0 0 10px #d67affaa) drop-shadow(0 4px 6px #120b1766);
+}
+.uv-flashlight:active {
+  cursor: grabbing;
 }
 .journal-lights {
   position: fixed;
@@ -335,7 +340,7 @@ button:focus-visible {
   display: flex;
   gap: 8px;
 }
-.journal-lights .invisible-toggle,
+.journal-lights .uv-flashlight,
 .journal-lights .comments-toggle {
   position: relative;
   inset: auto;
@@ -343,29 +348,33 @@ button:focus-visible {
 .journal-lights button[hidden] {
   display: none;
 }
-.invisible-toggle:hover {
-  background: #fff2d6;
-  color: #9b392c;
-}
-.invisible-toggle[aria-pressed='true'] {
-  border-color: #65bfe6;
-  background: #a6e5ff;
-  color: #125486;
-  box-shadow: 0 0 16px #56c8ffb3;
-}
-.page-paper--uv-active::before {
+.page-paper--uv-active::before,
+.page--cover.page--uv-active::before,
+.page--blank.page--uv-active::before,
+.page--missing-end.page--uv-active::before {
   position: absolute;
   z-index: 2;
-  inset: 0;
+  top: var(--uv-y, 50%);
+  left: var(--uv-x, 50%);
+  width: var(--uv-size, clamp(180px, 22vw, 300px));
+  height: var(--uv-size, clamp(180px, 22vw, 300px));
+  transform: translate(-50%, -50%);
   content: '';
   pointer-events: none;
   background: radial-gradient(
-    ellipse clamp(180px, 22vw, 300px) clamp(130px, 18vh, 220px) at var(--uv-x, 50%) var(--uv-y, 50%),
+    ellipse at center,
     #70d9ff88 0%,
-    #42baf254 56%,
-    #248fe51c 78%,
-    transparent 100%
+    #42baf254 62%,
+    #248fe51c 100%
   );
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
   mix-blend-mode: screen;
 }
 .page-paper--uv-active .page-body {
@@ -386,16 +395,20 @@ button:focus-visible {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease;
-  -webkit-mask-image: radial-gradient(
-    ellipse clamp(180px, 22vw, 300px) clamp(130px, 18vh, 220px) at var(--uv-x, 50%) var(--uv-y, 50%),
-    #000 0 56%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    ellipse clamp(180px, 22vw, 300px) clamp(130px, 18vh, 220px) at var(--uv-x, 50%) var(--uv-y, 50%),
-    #000 0 56%,
-    transparent 100%
-  );
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-size: var(--uv-size) var(--uv-size);
+  -webkit-mask-position: var(--uv-left) var(--uv-top);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-size: var(--uv-size) var(--uv-size);
+  mask-position: var(--uv-left) var(--uv-top);
+  mask-repeat: no-repeat;
+  mask-composite: intersect;
 }
 .invisible-content {
   display: flex;
@@ -631,23 +644,6 @@ button:focus-visible {
 .page--missing-end {
   background: var(--paper);
 }
-.page--cover.page--uv-active::before,
-.page--blank.page--uv-active::before,
-.page--missing-end.page--uv-active::before {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  content: '';
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse clamp(180px, 22vw, 300px) clamp(130px, 18vh, 220px) at var(--uv-x, 50%) var(--uv-y, 50%),
-    #70d9ff88 0%,
-    #42baf254 56%,
-    #248fe51c 78%,
-    transparent 100%
-  );
-  mix-blend-mode: screen;
-}
 .page--missing::after {
   display: none;
 }
@@ -854,38 +850,6 @@ button:focus-visible {
   }
   .page-paper {
     padding: 22px 16px 38px;
-  }
-  .page-paper--uv-active::before {
-    background: radial-gradient(
-      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
-      #70d9ff66 0%,
-      #42baf254 56%,
-      #248fe51c 78%,
-      transparent 100%
-    );
-  }
-  .page--cover.page--uv-active::before,
-  .page--blank.page--uv-active::before,
-  .page--missing-end.page--uv-active::before {
-    background: radial-gradient(
-      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
-      #70d9ff66 0%,
-      #42baf254 56%,
-      #248fe51c 78%,
-      transparent 100%
-    );
-  }
-  .page-paper--uv-active .invisible-ink {
-    -webkit-mask-image: radial-gradient(
-      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
-      #000 0 56%,
-      transparent 100%
-    );
-    mask-image: radial-gradient(
-      ellipse clamp(120px, 42vw, 200px) clamp(90px, 18vh, 150px) at var(--uv-x, 50%) var(--uv-y, 50%),
-      #000 0 56%,
-      transparent 100%
-    );
   }
   .invisible-ink {
     padding: 22px 16px 38px;
