@@ -12,4 +12,4 @@ El verdadero orden queda asi:
 4. Ingeniería, robótica e IA
 5. Química
 
-Y lo que puedo adoptar para terminar mas rapido es
+Y lo que puedo adoptar para terminar mas rapido es, unificar varias disciplinas en la semana a la vez
