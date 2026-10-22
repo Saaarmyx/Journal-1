@@ -1,20 +1,23 @@
-# Journal 1
+# Journal Template
 
 ![Versión](https://img.shields.io/badge/version-1.0.0-8b5e3c)
-![Licencia](https://img.shields.io/badge/licencia-uso%20personal%20no%20comercial-8b5e3c)
-![Estado](https://img.shields.io/badge/estado-proyecto%20personal-6b705c)
+![Licencia](https://img.shields.io/badge/license-Apache--2.0-8b5e3c)
+![Estado](https://img.shields.io/badge/status-template-6b705c)
 
-Un diario digital que convierte archivos Markdown en un libro interactivo. Cada página se escribe y mantiene por separado, así que puedes añadir, editar o quitar contenido sin modificar los componentes de la aplicación.
+Un diario digital personal creado con la plantilla modular `journal-template`. Cada repositorio contiene un solo diario y un solo tomo. Las páginas se escriben en Markdown y se agregan automáticamente al libro.
 
-Esta edición reúne apuntes personales de matemáticas: desde aritmética y álgebra hasta cálculo, estadística y métodos numéricos.
+La demo enlazada es la edición personal de Saaarmyx. El código de la plantilla puede reutilizarse para crear diarios propios.
 
 ## Demostración
 
-Accediendo a este enlace: [Vista previa](https://journal-1-mu.vercel.app)
+Explora el diario interactivo en la versión publicada:
+
+[![Abrir la demostración en vivo](https://img.shields.io/badge/Abrir%20demostraci%C3%B3n-Diario%20interactivo-8b5e3c?style=for-the-badge)](https://journal-1-mu.vercel.app/)
 
 ## Características
 
 - Libro a doble página en escritorio, con navegación táctil y deslizamiento en móviles.
+- Un diario y un tomo por repositorio, con identidad y portada configurables.
 - Portada, página de propiedad y cierre definidos mediante Markdown.
 - Páginas numeradas que aparecen automáticamente al añadir archivos; los números ausentes entre páginas escritas se muestran como hojas arrancadas.
 - Notas de tinta invisible en archivos `-invisible.md`, reveladas con la luz azul sobre la misma hoja.
@@ -42,16 +45,36 @@ Accediendo a este enlace: [Vista previa](https://journal-1-mu.vercel.app)
 ```bash
 git clone https://github.com/Saaarmyx/Journal-1.git
 cd Journal-1
+git submodule update --init --recursive
 npm install
 npm run dev
 ```
 
-Abre la URL que imprime Vite. Para generar y previsualizar la versión de producción:
+Abre la URL local que imprime Vite. Para generar y previsualizar la versión de producción:
 
 ```bash
 npm run build
 npm run preview
 ```
+
+## Configurar el diario
+
+Este repositorio mantiene un solo diario y un solo tomo. Edita `src/config.js` para personalizar su identidad, la ruta de contenido y la portada:
+
+```js
+export const journalConfig = {
+  id: 'saaarmyx',
+  title: 'Journal #1',
+  author: 'Saaarmyx',
+  description: 'Un diario personal, página a página.',
+  contentDirectory: 'pages',
+  cover: '/portada.svg',
+  coverAlt: 'Portada ilustrada del diario',
+  storageKey: 'journal-current-page',
+}
+```
+
+Las páginas de esta edición permanecen en `src/content/pages/`. Para crear otro diario, crea otra copia desde el repositorio `journal-template`; este repositorio conserva un solo diario y un solo tomo.
 
 ## Escribir páginas
 
@@ -110,11 +133,11 @@ title: Una explicación extra
 Este texto se revela con la luz azul.
 ```
 
-La nota aparece sobre la misma página, no en una ventana aparte. En escritorio la luz sigue el puntero; en móvil se activa directamente con el botón.
+La nota aparece sobre la misma página, no en una ventana aparte. Arrastra la linterna UV por la página para revelar la tinta; el gesto funciona con ratón y con el dedo.
 
 ### Portada y cierre
 
-- `000.md` representa la portada. La imagen de portada está en `public/portada.png`.
+- `000.md` representa la portada. La imagen de portada se configura en `src/config.js` y está en `public/`.
 - `001.md` es la página de propiedad.
 - `final.md` añade una única página de cierre al final del libro.
 
@@ -123,7 +146,9 @@ La nota aparece sobre la misma página, no en una ventana aparte. En escritorio 
 ```text
 public/                    Recursos públicos, portada, imágenes y favicon
 src/
-  content/pages/           Páginas numeradas en Markdown
+  config.js                Identidad, contenido y portada del diario
+  content/
+    pages/                 Páginas numeradas del único tomo
   journal/
     components/            Libro y hojas
     createJournal.js       Montaje del diario
@@ -136,10 +161,10 @@ vite.config.js             Configuración de Vite
 
 ## Contribuciones
 
-Es un proyecto personal. Si quieres proponer una mejora, abre un _issue_ o un _pull request_ con una descripción del cambio. No envíes información privada en los reportes. Las contribuciones solo se integrarán con autorización de sus autores para distribuirlas bajo las condiciones de este proyecto.
+Para proponer una mejora, abre un _issue_ o un _pull request_ con una descripción clara. No incluyas información privada ni contenido de diarios personales en los reportes. Las contribuciones de código se distribuyen bajo Apache-2.0.
 
 ## Créditos y licencia
 
-Creado por **Saaarmyx**. La licencia personalizada permite usar, copiar y modificar el proyecto para fines personales y no comerciales, exige atribución y prohíbe venderlo. Lee [LICENSE](LICENSE) antes de reutilizarlo.
+Creado por **Saaarmyx**. El código de la plantilla se distribuye bajo la licencia estándar [Apache-2.0](LICENSE), aprobada por la [Open Source Initiative](https://opensource.org/licenses). Permite usar, modificar y redistribuir el código, incluso con fines comerciales, respetando sus condiciones de atribución y redistribución.
 
-Esta condición permite consultar el código y reutilizarlo bajo esos límites, pero no es una licencia de código abierto según la definición de OSI, que no permite restringir el uso comercial. Los paquetes y recursos de terceros conservan sus propias licencias.
+La licencia no cubre las entradas personales de `src/content/` ni fotografías, portadas y otros medios de `public/`; sus autores conservan sus derechos. Consulta [NOTICE](NOTICE) y las licencias individuales de dependencias y recursos de terceros antes de reutilizarlos.

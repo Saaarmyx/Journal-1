@@ -19,18 +19,6 @@ export function createPage(page, side, nextPage = null) {
       : `${accessibleTitle ? `${accessibleTitle}, ` : ''}página ${page.number}`,
   )
 
-  const moveBlueLight = (event) => {
-    if (window.matchMedia('(max-width: 700px)').matches) return
-    if (!article.classList.contains('page--uv-active')) return
-
-    const surface = event.target.closest('.page-paper') || article
-    const bounds = surface.getBoundingClientRect()
-    surface.style.setProperty('--uv-x', `${event.clientX - bounds.left}px`)
-    surface.style.setProperty('--uv-y', `${event.clientY - bounds.top}px`)
-  }
-  article.addEventListener('pointermove', moveBlueLight)
-  article.addEventListener('pointerdown', moveBlueLight)
-
   if (page.kind === 'missing') {
     if (!nextPage) article.classList.add('page--missing-end')
     article.innerHTML = `
@@ -41,8 +29,10 @@ export function createPage(page, side, nextPage = null) {
   }
 
   if (page.kind === 'cover') {
+    const coverSrc = escapeText(page.coverSrc || '/portada.png')
+    const coverAlt = escapeText(page.coverAlt || 'Portada ilustrada del diario')
     article.innerHTML = `
-      <img class="cover-image" src="/portada.png" alt="Portada ilustrada del diario" fetchpriority="high">
+      <img class="cover-image" src="${coverSrc}" alt="${coverAlt}" fetchpriority="high">
     `
     return article
   }

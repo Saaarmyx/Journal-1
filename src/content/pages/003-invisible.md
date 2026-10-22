@@ -2,7 +2,7 @@
 title: Maldita sea ~~la vida~~
 ---
 
-Si ese era mi maldito orden fantasioso, pero eso no es posible ya que para entrar en cosas como fisica avanzada necesito saber ~~mucha~~ matematicas, ademas de que **Computación y Herramientas** es mejor juntas ya que programar sin git, terminal o el editor es mega complicado, tambien quimica es la que menos puede tener una ~~coneccion~~ relacion con el resto y la ui/ux se puede aplicar en paralelo con **computacion**
+Si ese era mi maldito orden fantasioso, pero eso no es posible ya que para entrar en cosas como fisica avanzada necesito saber ~~mucha~~ matematicas, ademas de que **Computación y Herramientas** es mejor juntas ya que programar sin **git**, terminal o el editor es mega complicado, tambien quimica es la que menos puede tener una ~~coneccion~~ relacion con el resto y la ui/ux se puede aplicar en paralelo con **computacion**
 
 El verdadero orden queda asi:
 
