@@ -4,7 +4,7 @@
 ![Licencia](https://img.shields.io/badge/license-Apache--2.0-8b5e3c)
 ![Estado](https://img.shields.io/badge/status-template-6b705c)
 
-Una plantilla modular para crear diarios digitales personales a partir de archivos Markdown. Configura varios diarios y tomos, escribe cada página por separado y publica cada copia con la identidad y el contenido de su autor.
+Un diario digital personal creado con la plantilla modular `journal-template`. Cada repositorio contiene un solo diario y un solo tomo. Las páginas se escriben en Markdown y se agregan automáticamente al libro.
 
 La demo enlazada es la edición personal de Saaarmyx. El código de la plantilla puede reutilizarse para crear diarios propios.
 
@@ -17,8 +17,7 @@ Explora el diario interactivo en la versión publicada:
 ## Características
 
 - Libro a doble página en escritorio, con navegación táctil y deslizamiento en móviles.
-- Varios diarios y tomos seleccionables desde la interfaz.
-- Configuración por diario para autor, título, descripción, portada y tomos.
+- Un diario y un tomo por repositorio, con identidad y portada configurables.
 - Portada, página de propiedad y cierre definidos mediante Markdown.
 - Páginas numeradas que aparecen automáticamente al añadir archivos; los números ausentes entre páginas escritas se muestran como hojas arrancadas.
 - Notas de tinta invisible en archivos `-invisible.md`, reveladas con la luz azul sobre la misma hoja.
@@ -46,6 +45,7 @@ Explora el diario interactivo en la versión publicada:
 ```bash
 git clone https://github.com/Saaarmyx/Journal-1.git
 cd Journal-1
+git submodule update --init --recursive
 npm install
 npm run dev
 ```
@@ -57,41 +57,24 @@ npm run build
 npm run preview
 ```
 
-## Crear tu diario y añadir tomos
+## Configurar el diario
 
-Edita `src/config.js` para configurar la identidad del diario y la lista de tomos. Cada diario tiene un `id`, nombre, autor, descripción, tomo inicial y uno o más tomos. El selector de diarios y tomos aparece automáticamente cuando agregas más de una opción.
-
-La edición incluida usa `src/content/pages/` como contenido del tomo 01. Para añadir otro tomo o un diario independiente, crea un directorio dentro de `src/content/journals/` y registra su ruta en `src/config.js`:
+Este repositorio mantiene un solo diario y un solo tomo. Edita `src/config.js` para personalizar su identidad, la ruta de contenido y la portada:
 
 ```js
-{
-  id: 'mi-diario',
-  title: 'Mi diario',
-  author: 'Tu nombre',
-  description: 'Notas, observaciones y memoria.',
-  defaultVolumeId: '01',
-  volumes: [
-    {
-      id: '01',
-      title: 'Tomo 1',
-      contentDirectory: 'journals/mi-diario/01',
-      cover: '/journals/mi-diario/01/portada.jpg',
-      coverAlt: 'Portada de Mi diario',
-    },
-    {
-      id: '02',
-      title: 'Tomo 2',
-      contentDirectory: 'journals/mi-diario/02',
-      cover: '/journals/mi-diario/02/portada.jpg',
-      coverAlt: 'Portada del tomo 2',
-    },
-  ],
+export const journalConfig = {
+  id: 'saaarmyx',
+  title: 'Journal #1',
+  author: 'Saaarmyx',
+  description: 'Un diario personal, página a página.',
+  contentDirectory: 'pages',
+  cover: '/portada.svg',
+  coverAlt: 'Portada ilustrada del diario',
+  storageKey: 'journal-current-page',
 }
 ```
 
-Guarda las páginas como `src/content/journals/mi-diario/01/000.md`, `001.md`, etc. Pon las imágenes de portada en `public/journals/mi-diario/01/` y referencia imágenes de página desde `public/` con rutas como `/journals/mi-diario/01/foto.jpg`. Para separar diarios de distintos autores, añade otra entrada al arreglo `journals` de `src/config.js` con su propio `id` y sus tomos.
-
-La URL acepta `?journal=mi-diario&volume=02`; los selectores actualizan estos valores al cambiar de diario o tomo. Así cada tomo conserva su propia página de lectura.
+Las páginas de esta edición permanecen en `src/content/pages/`. Para crear otro diario, crea otra copia desde el repositorio `journal-template`; este repositorio conserva un solo diario y un solo tomo.
 
 ## Escribir páginas
 
@@ -154,7 +137,7 @@ La nota aparece sobre la misma página, no en una ventana aparte. Arrastra la li
 
 ### Portada y cierre
 
-- `000.md` representa la portada. La imagen de portada está en `public/portada.png`.
+- `000.md` representa la portada. La imagen de portada se configura en `src/config.js` y está en `public/`.
 - `001.md` es la página de propiedad.
 - `final.md` añade una única página de cierre al final del libro.
 
@@ -163,10 +146,9 @@ La nota aparece sobre la misma página, no en una ventana aparte. Arrastra la li
 ```text
 public/                    Recursos públicos, portada, imágenes y favicon
 src/
-  config.js                Autores, diarios, tomos y portadas
+  config.js                Identidad, contenido y portada del diario
   content/
-    pages/                 Páginas del tomo inicial de la demo
-    journals/              Contenido separado por diario y tomo
+    pages/                 Páginas numeradas del único tomo
   journal/
     components/            Libro y hojas
     createJournal.js       Montaje del diario

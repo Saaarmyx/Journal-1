@@ -341,21 +341,6 @@ button:focus-visible {
   align-items: center;
   gap: 8px;
 }
-.journal-picker {
-  max-width: min(30vw, 190px);
-  min-height: 36px;
-  padding: 5px 28px 5px 10px;
-  border: 1px solid #d1b98788;
-  border-radius: 4px;
-  background: #211d1add;
-  color: #f0e4ca;
-  font: 14px/1.2 var(--mono);
-  cursor: pointer;
-}
-.journal-picker option {
-  background: #211d1a;
-  color: #f0e4ca;
-}
 .journal-lights .uv-flashlight,
 .journal-lights .comments-toggle {
   position: relative;
@@ -869,12 +854,6 @@ button:focus-visible {
   }
   .journal-lights {
     gap: 4px;
-  }
-  .journal-picker {
-    max-width: 25vw;
-    min-height: 32px;
-    padding: 4px 18px 4px 6px;
-    font-size: 12px;
   }
   .page-paper--ir-active::before {
     background: radial-gradient(
