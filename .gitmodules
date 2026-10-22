@@ -1,4 +1,0 @@
-[submodule "template"]
-	path = template
-	url = https://github.com/saarmyxrecover/journal-template.git
-	branch = main
