@@ -1,65 +1,103 @@
-# Journal Template
+<div align="center">
 
-![Versión](https://img.shields.io/badge/version-1.0.0-8b5e3c)
-![Licencia](https://img.shields.io/badge/license-Apache--2.0-8b5e3c)
-![Estado](https://img.shields.io/badge/status-template-6b705c)
+# Journal #1
 
-Un diario digital personal creado con la plantilla modular `journal-template`. Cada repositorio contiene un solo diario y un solo tomo. Las páginas se escriben en Markdown y se agregan automáticamente al libro.
+Mi diario digital personal, con libro a doble página, tinta invisible y fotos tipo polaroid.
 
-La demo enlazada es la edición personal de Saaarmyx. El código de la plantilla puede reutilizarse para crear diarios propios.
+[![Licencia](https://img.shields.io/badge/Licencia-Apache_2.0-D22128?logo=apache&logoColor=white)](LICENSE)
+![Estado](https://img.shields.io/badge/Estado-Estable-22C55E)
+![Versión](https://img.shields.io/badge/Versión-1.0.0-8B5CF6)
+![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
 
-## Demostración
+</div>
 
-Explora el diario interactivo en la versión publicada:
+## Estado del proyecto
 
-[![Abrir la demostración en vivo](https://img.shields.io/badge/Abrir%20demostraci%C3%B3n-Diario%20interactivo-8b5e3c?style=for-the-badge)](https://journal-1-mu.vercel.app/)
+**Estable.** El diario está publicado, tiene contenido propio y se mantiene con entradas nuevas. No tiene tests ni integración continua.
 
-## Características
+## Descripción
 
-- Libro a doble página en escritorio, con navegación táctil y deslizamiento en móviles.
+Journal #1 es mi diario personal: un solo tomo, una sola portada y páginas que se escriben en Markdown. La demo publicada es mi edición; el motor se puede reutilizar para crear otros diarios.
+
+Lo hice para tener un espacio que no se sintiera como una lista de notas. El libro se pasa con gestos, las hojas faltantes quedan arrancadas y algunas notas solo aparecen cuando arrastras la linterna UV o la luz roja sobre la página.
+
+## Características principales
+
+- Libro a doble página en escritorio y navegación táctil en móvil.
 - Un diario y un tomo por repositorio, con identidad y portada configurables.
-- Portada, página de propiedad y cierre definidos mediante Markdown.
-- Páginas numeradas que aparecen automáticamente al añadir archivos; los números ausentes entre páginas escritas se muestran como hojas arrancadas.
-- Notas de tinta invisible en archivos `-invisible.md`, reveladas con la luz azul sobre la misma hoja.
-- Comentarios HTML que se ocultan del texto y se revelan con la luz roja; `~~texto~~` se muestra tachado.
+- Portada, página de propiedad y cierre definidos en Markdown.
+- Páginas numeradas que aparecen automáticamente al añadir archivos.
+- Hojas arrancadas para los números ausentes.
+- Notas de tinta invisible en archivos `-invisible.md`, reveladas con luz UV.
+- Comentarios HTML ocultos que se revelan con luz roja.
+- Tachado con `~~texto~~`, subrayado con `++texto++` y resaltado con `==texto==`.
 - Fotografías tipo polaroid, centradas o junto al texto.
-- Ajuste automático de la tipografía para aprovechar el espacio de la página y reducirla cuando el contenido crece.
-- Vista en caliente durante el desarrollo cuando guardas cambios en Markdown.
+- Ajuste automático de la tipografía según el contenido.
+- Vista en caliente durante el desarrollo.
 - Analítica de Vercel.
-
-## Tecnologías
-
-- JavaScript moderno, HTML y CSS; no usa un framework de interfaz.
-- Vite 6 para desarrollo y compilación.
-- Markdown interpretado por el proyecto en el navegador.
-- [Vercel Analytics](https://vercel.com/docs/analytics) para analítica.
-- Tipografía Indie Flower, servida por Google Fonts.
 
 ## Requisitos
 
 - Node.js 18, 20 o 22+.
 - npm.
 
-## Instalación y uso
+## Instalación
 
 ```bash
 git clone https://github.com/Saaarmyx/Journal-1.git
 cd Journal-1
-git submodule update --init --recursive
 npm install
-npm run dev
 ```
 
-Abre la URL local que imprime Vite. Para generar y previsualizar la versión de producción:
+## Uso
 
 ```bash
-npm run build
-npm run preview
+npm run dev      # desarrollo con recarga en caliente
+npm run build    # build de producción en dist/
+npm run preview  # previsualiza el build
 ```
 
-## Configurar el diario
+Demo publicada: [https://journal-1-mu.vercel.app/](https://journal-1-mu.vercel.app/)
 
-Este repositorio mantiene un solo diario y un solo tomo. Edita `src/config.js` para personalizar su identidad, la ruta de contenido y la portada:
+### Escribir una página
+
+Las páginas viven en `src/content/pages/` y usan numeración consecutiva:
+
+```text
+src/content/pages/009.md
+src/content/pages/009-invisible.md
+```
+
+Cada página puede incluir título y fecha:
+
+```md
+---
+title: Una idea que quiero recordar
+date: 21 de octubre de 2026
+---
+
+Escribe aquí el contenido de la página.
+```
+
+Procura mantener cada archivo en un máximo de 60 líneas. El diario ajusta el tamaño de letra, pero las líneas largas, las imágenes y las listas ocupan más espacio visual.
+
+### Imágenes y polaroids
+
+Guarda las imágenes en `public/images/` y referéncialas desde Markdown:
+
+```md
+![Descripción de la imagen](/images/foto.jpg 'Nota al pie')
+```
+
+Para alinear la polaroid a un lado:
+
+```md
+![Un apunte visual](/images/foto.jpg 'Mirar este detalle') {right}
+```
+
+### Configuración
+
+Edita `src/config.js`:
 
 ```js
 export const journalConfig = {
@@ -74,97 +112,63 @@ export const journalConfig = {
 }
 ```
 
-Las páginas de esta edición permanecen en `src/content/pages/`. Para crear otro diario, crea otra copia desde el repositorio `journal-template`; este repositorio conserva un solo diario y un solo tomo.
-
-## Escribir páginas
-
-Guarda los archivos en `src/content/pages/`. Usa números consecutivos con ceros opcionales al inicio: `000.md`, `001.md`, `002.md`. El número identifica la posición de la hoja; la secuencia se extiende hasta el número más alto que tenga un archivo normal o invisible.
-
-Si falta un número entre dos páginas existentes, el diario muestra una hoja arrancada en ese lugar. No inventa hojas después de la última página escrita. Si solo existe una página invisible para un número, muestra una hoja en blanco con el acceso a la luz azul.
-
-Una página puede definir título y fecha en el _frontmatter_:
-
-```md
----
-title: Una idea que quiero recordar
-date: 21 de octubre de 2026
----
-
-Escribe aquí el contenido de la página.
-```
-
-El Markdown admite títulos de nivel 1 a 3, párrafos, citas, listas, código, enlaces e imágenes. Para dar formato al texto puedes usar negrita (`**texto**`), cursiva (`*texto*`), ambas (`***texto***`), tachado (`~~texto~~`), subrayado (`++texto++`), resaltado (`==texto==`) y código en línea (`` `código` ``):
-
-```md
-**Importante**, *una nota*, ***ambos estilos***, ~~tachado~~, ++subrayado++, ==resaltado== y `x + 1`.
-```
-
-Los comentarios HTML se ocultan del texto y pueden revelarse con la luz roja:
-
-```md
-<!-- revisar este paso después -->
-```
-
-Procura mantener cada archivo en un máximo de 60 líneas para que la página tenga espacio suficiente. El diario ajusta automáticamente el tamaño de letra según el contenido, pero líneas largas, imágenes y listas ocupan más espacio visual.
-
-### Imágenes tipo polaroid
-
-Guarda las imágenes en `public/images/` y haz referencia a ellas desde Markdown. El texto entre comillas se usa como pie de foto:
-
-```md
-![Descripción de la imagen](/images/foto.jpg 'Nota al pie')
-```
-
-Para alinear la polaroid a un lado y dejar que el texto la rodee, añade `{left}` o `{right}`:
-
-```md
-![Un apunte visual](/images/foto.jpg 'Mirar este detalle') {right}
-```
-
-### Tinta invisible
-
-Añade `-invisible` al nombre de una página para guardar una explicación adicional. Por ejemplo, `001-invisible.md` acompaña a `001.md`:
-
-```md
----
-title: Una explicación extra
----
-
-Este texto se revela con la luz azul.
-```
-
-La nota aparece sobre la misma página, no en una ventana aparte. Arrastra la linterna UV por la página para revelar la tinta; el gesto funciona con ratón y con el dedo.
-
-### Portada y cierre
-
-- `000.md` representa la portada. La imagen de portada se configura en `src/config.js` y está en `public/`.
-- `001.md` es la página de propiedad.
-- `final.md` añade una única página de cierre al final del libro.
-
 ## Estructura del proyecto
 
 ```text
-public/                    Recursos públicos, portada, imágenes y favicon
-src/
-  config.js                Identidad, contenido y portada del diario
-  content/
-    pages/                 Páginas numeradas del único tomo
-  journal/
-    components/            Libro y hojas
-    createJournal.js       Montaje del diario
-    loadPages.js           Mapeo y orden de páginas
-    markdown.js            Lectura y representación de Markdown
-  styles/global.css        Estilos del libro y diseño adaptable
-  main.js                  Entrada de la aplicación
-vite.config.js             Configuración de Vite
+Journal 1/
+├── public/
+│   ├── images/             # Fotografías del diario
+│   ├── portada.svg         # Portada
+│   └── favicon.svg
+├── src/
+│   ├── config.js           # Identidad y configuración del diario
+│   ├── content/pages/      # Páginas Markdown del tomo
+│   ├── journal/
+│   │   ├── components/     # Book y Page
+│   │   ├── createJournal.js
+│   │   ├── loadPages.js
+│   │   └── markdown.js
+│   ├── main.js             # Entrada de la aplicación
+│   └── styles/global.css
+├── dist/                   # Build generado (no editar a mano)
+├── index.html
+├── vite.config.js
+├── NOTICE
+├── LICENSE
+└── README.md
 ```
 
-## Contribuciones
+## Hoja de ruta
 
-Para proponer una mejora, abre un _issue_ o un _pull request_ con una descripción clara. No incluyas información privada ni contenido de diarios personales en los reportes. Las contribuciones de código se distribuyen bajo Apache-2.0.
+- [x] Libro a doble página con navegación táctil.
+- [x] Carga automática de páginas Markdown.
+- [x] Tinta invisible con linterna UV y luz roja para comentarios.
+- [x] Polaroids, código y ajuste tipográfico.
+- [x] Página de cierre y contenido del tomo.
+- [x] Demo publicada en Vercel y analítica.
+- [ ] Añadir pruebas para `loadPages` y el renderizado de Markdown.
+- [ ] Configurar integración continua con `npm run build`.
+- [ ] Publicar una versión etiquetada.
+- [ ] Añadir un `vercel.json` si el despliegue necesita configuración explícita.
 
-## Créditos y licencia
+## Contribuir
 
-Creado por **Saaarmyx**. El código de la plantilla se distribuye bajo la licencia estándar [Apache-2.0](LICENSE), aprobada por la [Open Source Initiative](https://opensource.org/licenses). Permite usar, modificar y redistribuir el código, incluso con fines comerciales, respetando sus condiciones de atribución y redistribución.
+El código del diario es abierto, pero el contenido de `src/content/` es personal. Si quieres mejorar el motor, lee [CONTRIBUTING.md](CONTRIBUTING.md). No envíes entradas, fotos ni correcciones de texto del diario.
 
-La licencia no cubre las entradas personales de `src/content/` ni fotografías, portadas y otros medios de `public/`; sus autores conservan sus derechos. Consulta [NOTICE](NOTICE) y las licencias individuales de dependencias y recursos de terceros antes de reutilizarlos.
+## Seguridad
+
+Si encuentras un fallo que exponga contenido personal o permita inyectar HTML en las páginas, sigue [SECURITY.md](SECURITY.md) y no lo publiques en un issue con datos del diario.
+
+## Licencia
+
+Este proyecto se distribuye bajo **Apache License 2.0** (`Apache-2.0`). Consulta el archivo [LICENSE](LICENSE) y el [NOTICE](NOTICE).
+
+Apache 2.0 permite usar, modificar y redistribuir el código, con o sin fines comerciales, siempre que se conserve el aviso de copyright, se incluya una copia de la licencia y se indiquen los cambios. También incluye una concesión de patentes y requiere conservar los avisos de atribución.
+
+**Importante:** la licencia cubre el código de la aplicación, no las entradas personales de `src/content/` ni las fotografías, portadas y demás medios de `public/`. Esos contenidos conservan los derechos de sus autores.
+
+Es un proyecto personal de Santiago Sarmiento. No está afiliado a Nexora ni utiliza su marca.
+
+---
+
+Hecho por Santiago Sarmiento
